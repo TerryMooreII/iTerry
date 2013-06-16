@@ -3,6 +3,7 @@
 /* Services */
 
 var WEB_SERVICE_URL = 'http://localhost/home/api/index.php';
+var WUNDERGROUND_URL = 'http://api.wunderground.com/api/fddd0e97a864818a';
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
@@ -64,4 +65,44 @@ angular.module('services', []).
 
         return feedsService;
 
+    }]).
+    service('weatherService', ['$http',  function($http){
+        var weatherService = {};
+
+        weatherService.getCurrentConditions = function(position, onSuccess, onFailure){
+            console.log('weatherService.getCurrentConditions In...')
+            var lon = position.coords.longitude; 
+            var lat = position.coords.latitude;
+            
+            $http.jsonp(WUNDERGROUND_URL + '/conditions/q/' + lat + ',' + lon + '.json?callback=JSON_CALLBACK')
+                .success(onSuccess).error(onFailure);
+        };
+
+        weatherService.getRadarImage = function(position){
+            var lon = position.coords.longitude; 
+            var lat = position.coords.latitude;
+            var height = 280;
+            var width = 280;
+            var radius = 100;
+            return WUNDERGROUND_URL +'/radar/image.gif?centerlat=' + lat + '&centerlon=' + lon + '&radius=' + radius + '&width=' + width + 'height=' + height + '&newmaps=1' 
+        };
+
+        weatherService.getAlerts = function(position, onSuccess, onFailure ){
+            var lon = position.coords.longitude; 
+            var lat = position.coords.latitude;
+            $http.jsonp(WUNDERGROUND_URL + '/alerts/q/' + lat + ',' + lon + '.json?callback=JSON_CALLBACK')
+                .success(onSuccess).error(onFailure);  
+        }
+
+        return  weatherService;
     }]);
+
+
+
+
+
+
+
+
+
+

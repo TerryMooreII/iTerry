@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="css/app.css"/>
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -42,52 +43,51 @@
 
     <div class="row-fluid">
       <div class="span12 well">
-        <div class="">
-          <div class="input-append" >
-            <input class="" id="search" type="text" placeholder="Google that shit">
-            <button class="btn btn-primary" type="button"><i class="icon-search icon-white"></i> Search</button>
+        <div class="pull-left">
+          <form action="http://www.google.com/search">
+            <div class="input-append" style="width:700px; margin-top:24px; margin-left:30px" >
+              <input class="" name="q" id="search"style="width:100%"  type="text" placeholder="Google that shit">
+              <button class="btn btn-primary" type="submit"><i class="icon-search icon-white"></i> Search</button>
+            </form>
+          </div>
+        </div>
+        <div class="pull-right"  ng-controller="WeatherController" style="color:#999999;margin-top:10px;margin-right:10px">
+          <div class="pull-left">
+            <a href="{{currentConditions.forecast_url}}" target="_blank">
+              <img ng-src="{{currentConditions.icon_url}}" class="pull-left"/>
+            </a>
+            <ul class="pull-left unstyled" style="font-size:10px;margin:10px 20px 0px 5px">
+              <li><span style="font-size:24px">{{ currentConditions.temp_f }}&deg;</span></li>
+              <li><span style="font-size:10px">{{currentConditions.display_location.full}}</span></li>
+            </ul>
+           </div>
+          <div class="pull-left">
+            <ul class="unstyled" style="font-size:10px">
+              <li>Feels like {{currentConditions.feelslike_f}}&deg;</li>
+              <li>Wind {{ currentConditions.wind_mph }} mph</li>
+              <li>Humidity {{ currentConditions.relative_humidity }} </li>
+            </ul>
+          </div>
+          <div class="pull-right" style="padding-left:20px">
+            <ul class="unstyled" style="font-size:10px">
+              <li><i class="icon-cloud" ng-click="getRadar()" rel="popover"  data-original-title="{{currentConditions.display_location.full}}"></i></li>
+              <li><i class="icon-calendar"></i></li>
+              <li><i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i></li>
+            </ul>
           </div>
         </div>
       </div>
-      <div class="row-fluid">
+      <div class="row-fluid" ng-controller="FeedsController">
         <div class="row-fluid">
-          <div class="span3"  style="border:1px solid  black">
-            <div class="feed-header" style="border-bottom:1px solid  black">
-              Header
+          <div class="span3"  style="border:1px solid  black" ng-repeat="feed in feedsData" >
+            <div class="feed-header" style="border-bottom:1px solid  black" >
+              <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
             </div>
-            <div class="feed-body">
+            <div class="feed-body" >
               <ul>
-                <li>Feed Me</li>
-              </ul>
-            </div>
-          </div>
-          <div class="span3"  style="border:1px solid  black">
-            <div class="feed-header" style="border-bottom:1px solid  black">
-              Header
-            </div>
-            <div class="feed-body">
-              <ul>
-                <li>Feed Me</li>
-              </ul>
-            </div>
-          </div>
-          <div class="span3"  style="border:1px solid  black">
-            <div class="feed-header" style="border-bottom:1px solid  black">
-              Header
-            </div>
-            <div class="feed-body">
-              <ul>
-                <li>Feed Me</li>
-              </ul>
-            </div>
-          </div>
-          <div class="span3"  style="border:1px solid  black">
-            <div class="feed-header" style="border-bottom:1px solid  black">
-              Header
-            </div>
-            <div class="feed-body">
-              <ul>
-                <li>Feed Me</li>
+                <li ng-repeat="entry in feed.entries">
+                  <a href="{{entry.link}}">{{entry.title}}</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -97,8 +97,8 @@
     
   <div ng-view></div>
 </div>
-
-<div class="modal hide fade" id="myModal" ng-controller="FeedsController">
+         
+<div class="modal hide fade" id="myModal" >
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>Feed</h3>
@@ -130,7 +130,7 @@
 </div>
 
 
-
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   <script src="lib/jquery-1.9.1.min.js"></script>
   <script src="lib/bootstrap.min.js"></script>
@@ -139,6 +139,12 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+  <script type="text/javascript">
+   //$(".icon-cloud").popover()
 
+            google.load("feeds", "1");
+
+
+  </script>
 </body>
 </html>
