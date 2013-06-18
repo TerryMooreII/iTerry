@@ -21,46 +21,33 @@ angular.module('controllers', []).
         getAll();
         
     }]).
-    controller('FeedsController', ['$scope', 'feedsService', function($scope, feedsService) {
+    controller('FeedsController', ['$scope', 'feedsService', '$filter', function($scope, feedsService, $filter) {
         console.log('FeedsController...');
             
-         var feeds = [];
-        $scope.feed = {};
         $scope.feedsData = [];
-
-        $scope.saveOrUpdate = function(){
-            console.log('FeedsControll.saveOrUpdate...')
-            console.log($scope.feed);
-            var request = { feed: $scope.feed };
-
-            feedsService.saveOrUpdate(request, function(response){
-
-            }, 
-            function(){
-                console.log('FeedsController.saveOrUpdate failure....')
-            });
-        };
+        var group = $filter('group');
+        var feeds = [];
+        $scope.feed = {};
         
         var getAll = function(){
-            // feedsService.getFeeds(function(response){
-            //     console.log(response);
-            //     $scope.feeds = response.feeds;
+            feedsService.getAll(function(response){
+                console.log(response);
+                $scope.feeds = response.feeds;
 
-            // }, function(){
-            //     console.log('FeedsController.getFeeds failure....')
-            // });
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            feeds.push('https://news.ycombinator.com/rss');
-            feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+            }, function(){
+                console.log('FeedsController.getFeeds failure....')
+            });
+            // feeds.push('https://news.ycombinator.com/rss');
+            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+            // feeds.push('https://news.ycombinator.com/rss');
+            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+            // feeds.push('https://news.ycombinator.com/rss');
+            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+            // feeds.push('https://news.ycombinator.com/rss');
+            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+            // feeds.push('https://news.ycombinator.com/rss');
+            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
+
             getFeedsFromGoogle();
         };
         
@@ -73,16 +60,38 @@ angular.module('controllers', []).
                     }
                 });
             }; 
-            setTimeout(function(){
-            console.log($scope.feedsData)
-        }, 1000)
         };   
-        
+        // var updateFeedsDataDisplay = function(feedsData){
+        //     var result = group(feedsData, 4);
+        //     $scope.feedsDataDisplay = result;
+        // }
         getAll();
+        //updateFeedsDataDisplay($scope.feedsData);
+
+        $scope.$watch('feedsData', function(feedsData){
+            var result = group(feedsData, 4);
+            $scope.feedsDataDisplay = result;
+        }, true);
 
     }])
-    .
-    controller('WeatherController', ['$scope', 'weatherService', function($scope, weatherService) {
+    .controller('FeedsAddModifyController', ['$scope', 'feedsService', '$filter', function($scope, feedsService, $filter) {
+        $scope.feed;
+
+        $scope.saveOrUpdate = function(){
+            console.log('FeedsControll.saveOrUpdate...')
+            console.log($scope.feed);
+            var request = { feed: $scope.feed };
+
+            feedsService.saveOrUpdate(request, function(response){
+                console.log('FeedsController.saveOrUpdate Saved Successfully....')
+            }, 
+            function(){
+                console.log('FeedsController.saveOrUpdate failure....')
+            });
+        };
+        
+    }])    
+    .controller('WeatherController', ['$scope', 'weatherService', function($scope, weatherService) {
         console.log('WeatherController...');
             
             $scope.currentConditions = {};

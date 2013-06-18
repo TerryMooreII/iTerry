@@ -26,12 +26,12 @@ angular.module('services', []).
         
         linksService.saveOrUpdate = function(request, onSuccess, onFailure){
             $http.post(WEB_SERVICE_URL + '/links')
-                .onSuccess(onSuccess).onFailure(onFailure);
+                .success(onSuccess).error(onFailure);
         }
 
         linksService.delete = function(id, onSuccess, onFailure){
             $http.delete(WEB_SERVICE_URL + '/links/' + id)
-                .onSuccess(onSuccess).onFailure(onFailure);
+                .success(onSuccess).error(onFailure);
         }
 
         return linksService;
@@ -52,19 +52,29 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure)
         };
 
-        
         feedsService.saveOrUpdate = function(request, onSuccess, onFailure){
             $http.post(WEB_SERVICE_URL + '/feeds')
-                .onSuccess(onSuccess).onFailure(onFailure);
-        }
+                .success(onSuccess).error(onFailure);
+        };
 
         feedsService.delete = function(id, onSuccess, onFailure){
             $http.delete(WEB_SERVICE_URL + '/feeds/' + id)
-                .onSuccess(onSuccess).onFailure(onFailure);
-        }
-
+                .success(onSuccess).error(onFailure);
+        };
+        
         return feedsService;
 
+    }]).
+    service('categoryService', ['$http',  function($http){
+        var categoryService = {}
+        
+        categoryService.get = function(query, onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/categories/' + query)
+                .success(onSuccess).error(onFailure);
+        };
+
+
+        return categoryService;
     }]).
     service('weatherService', ['$http',  function($http){
         var weatherService = {};
