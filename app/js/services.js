@@ -23,9 +23,9 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure)
         };
 
-        
+        1
         linksService.saveOrUpdate = function(request, onSuccess, onFailure){
-            $http.post(WEB_SERVICE_URL + '/links')
+            $http.post(WEB_SERVICE_URL + '/links', request)
                 .success(onSuccess).error(onFailure);
         }
 
@@ -53,7 +53,7 @@ angular.module('services', []).
         };
 
         feedsService.saveOrUpdate = function(request, onSuccess, onFailure){
-            $http.post(WEB_SERVICE_URL + '/feeds')
+            $http.post(WEB_SERVICE_URL + '/feeds', request)
                 .success(onSuccess).error(onFailure);
         };
 

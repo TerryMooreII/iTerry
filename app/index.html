@@ -82,8 +82,8 @@
   <!-- Feeds -->
   <div ng-controller="FeedsController">
     <div class="row-fluid"  ng-repeat="row in feedsDataDisplay">
-      <div class="span3"  style="border:1px solid  black" ng-repeat="feed in row" >
-        <div class="feed-header" style="border-bottom:1px solid  black" >
+      <div class="span3 feed-container"  ng-repeat="feed in row" >
+        <div class="feed-header" >
           <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
         </div>
         <div class="feed-body" >

@@ -26,34 +26,26 @@ angular.module('controllers', []).
             
         $scope.feedsData = [];
         var group = $filter('group');
-        var feeds = [];
+        var feeds = {};
         $scope.feed = {};
         
         var getAll = function(){
+            console.log('FeedsController.getAll...');
             feedsService.getAll(function(response){
-                console.log(response);
-                $scope.feeds = response.feeds;
-
+                //console.log(response);
+                feeds = response.feeds;
+                getFeedsFromGoogle();
+            
             }, function(){
                 console.log('FeedsController.getFeeds failure....')
             });
-            // feeds.push('https://news.ycombinator.com/rss');
-            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            // feeds.push('https://news.ycombinator.com/rss');
-            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            // feeds.push('https://news.ycombinator.com/rss');
-            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            // feeds.push('https://news.ycombinator.com/rss');
-            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
-            // feeds.push('https://news.ycombinator.com/rss');
-            // feeds.push('http://rss.slashdot.org/Slashdot/slashdot');
 
-            getFeedsFromGoogle();
         };
         
         var getFeedsFromGoogle = function(){
             for (var i=0; i<feeds.length;i++){
-                var feed = new google.feeds.Feed(feeds[i]);
+                console.log(feeds[i]);   
+                var feed = new google.feeds.Feed(feeds[i].url);
                 feed.load(function(result) {
                     if (!result.error && result.feed) {
                       $scope.feedsData.push(result.feed);
@@ -79,14 +71,16 @@ angular.module('controllers', []).
 
         $scope.saveOrUpdate = function(){
             console.log('FeedsControll.saveOrUpdate...')
-            console.log($scope.feed);
-            var request = { feed: $scope.feed };
 
+            var request = { feed: $scope.feed };
+            
             feedsService.saveOrUpdate(request, function(response){
                 console.log('FeedsController.saveOrUpdate Saved Successfully....')
+                console.log(response);
             }, 
-            function(){
+            function(response){
                 console.log('FeedsController.saveOrUpdate failure....')
+                console.log(response)
             });
         };
         
