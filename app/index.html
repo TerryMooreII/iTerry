@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="home">
+<html lang="en" ng-app="home" ng-cloak>
 <head>
   <meta charset="utf-8">
   <title>My AngularJS App</title>
@@ -52,37 +52,67 @@
         </form>
       </div>
       <div class="pull-right"  ng-controller="WeatherController" style="color:#999999;margin-top:10px;margin-right:10px">
-        <div class="pull-left">
-          <a href="{{currentConditions.forecast_url}}" target="_blank">
-            <img ng-src="{{currentConditions.icon_url}}" class="pull-left"/>
-          </a>
-          <ul class="pull-left unstyled" style="font-size:10px;margin:10px 20px 0px 5px">
-            <li><span style="font-size:24px">{{ currentConditions.temp_f }}&deg;</span></li>
-            <li><span style="font-size:10px">{{currentConditions.display_location.full}}</span></li>
+        
+        <div class="pull-left" ng-show="!showForecast" >
+        
+          <div class="pull-left">
+            <a href="{{currentConditions.forecast_url}}" target="_blank">
+              <img ng-src="{{currentConditions.icon_url}}" class="pull-left"/>
+            </a>
+            <ul class="pull-left unstyled" style="font-size:10px;margin:10px 20px 0px 5px;">
+              <li><span style="font-size:24px">{{ currentConditions.temp_f }}&deg;</span></li>
+              <li><span style="font-size:10px">{{currentConditions.display_location.full}}</span></li>
+            </ul>
+          </div>
+      
+          <div class="pull-left">
+            <ul class="unstyled" style="font-size:10px">
+              <li>Feels like {{currentConditions.feelslike_f}}&deg;</li>
+              <li>Wind {{ currentConditions.wind_mph }} mph</li>
+              <li>Humidity {{ currentConditions.relative_humidity }} </li>
+            </ul>
+          </div>
+        
+        </div>
+
+        <div class="pull-left" ng-show="showForecast" style="margin-top:-3px">
+          <ul class="unstyled inline">
+            <li ng-repeat="day in forecast">
+              <ul class="unstyled text-center" style="font-size:11px">
+                <li>
+                  <img width="50%" height="50%" ng-src="{{day.icon_url}}" />
+                </li>
+                <li>{{day.date.weekday_short}}</li>
+                <li>
+                  <span>{{day.high.fahrenheit}}&deg;</span> / <span style="color:#bbb">{{day.low.fahrenheit}}&deg;</span>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
-        <div class="pull-left">
-          <ul class="unstyled" style="font-size:10px">
-            <li>Feels like {{currentConditions.feelslike_f}}&deg;</li>
-            <li>Wind {{ currentConditions.wind_mph }} mph</li>
-            <li>Humidity {{ currentConditions.relative_humidity }} </li>
-          </ul>
-        </div>
+      
         <div class="pull-right" style="padding-left:20px">
           <ul class="unstyled" style="font-size:10px">
-            <li><i class="icon-cloud" ng-click="getRadar()" rel="popover"  data-original-title="{{currentConditions.display_location.full}}"></i></li>
-            <li><i class="icon-calendar"></i></li>
-            <li><i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i></li>
+            <li class="pointer" ng-click="getRadar()" >
+              <i class="icon-cloud" rel="popover" data-original-title="{{currentConditions.display_location.full}}"></i>
+            </li>
+            <li class="pointer" ng-click="setShowForecast()">
+              <i class="icon-calendar"></i>
+            </li>
+            <li>
+              <i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i>
+            </li>
           </ul>
         </div>
       </div>
+  
     </div>
   </div>
 
   <!-- Feeds -->
   <div ng-controller="FeedsController">
-    <div class="row-fluid"  ng-repeat="row in feedsDataDisplay">
-      <div class="span3 feed-container"  ng-repeat="feed in row" >
+    <div class="row-fluid"  ng-repeat="row in feedsDataDisplay ">
+      <div class="span4 feed-container"  ng-repeat="feed in row" >
         <div class="feed-header" >
           <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
         </div>
@@ -97,6 +127,10 @@
     </div>
   </div>
   <!--End-->
+<footer class="text-center">
+  Copyright 2013 <a href="http://terrymooreii.com">TerryMooreII.com</a>
+</footer>
+
 
 </div> <!--End content-->
          

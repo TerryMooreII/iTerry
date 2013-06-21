@@ -97,6 +97,13 @@ angular.module('services', []).
             return WUNDERGROUND_URL +'/radar/image.gif?centerlat=' + lat + '&centerlon=' + lon + '&radius=' + radius + '&width=' + width + 'height=' + height + '&newmaps=1' 
         };
 
+        weatherService.getForecast = function(position, onSuccess, onFailure){
+            var lon = position.coords.longitude; 
+            var lat = position.coords.latitude;
+            $http.jsonp(WUNDERGROUND_URL + '/forecast/q/' + lat + ',' + lon + '.json?callback=JSON_CALLBACK')
+                .success(onSuccess).error(onFailure);  
+        }
+
         weatherService.getAlerts = function(position, onSuccess, onFailure ){
             var lon = position.coords.longitude; 
             var lat = position.coords.latitude;

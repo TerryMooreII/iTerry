@@ -26,6 +26,7 @@ angular.module('controllers', []).
             
         $scope.feedsData = [];
         var group = $filter('group');
+        var orderBy = $filter('orderBy');
         var feeds = {};
         $scope.feed = {};
         
@@ -53,15 +54,20 @@ angular.module('controllers', []).
                 });
             }; 
         };   
-        // var updateFeedsDataDisplay = function(feedsData){
-        //     var result = group(feedsData, 4);
-        //     $scope.feedsDataDisplay = result;
-        // }
+       
         getAll();
-        //updateFeedsDataDisplay($scope.feedsData);
+       
+        $scope.toStringSort = function(arg) {
+            return ""+arg.position;
+        };
 
         $scope.$watch('feedsData', function(feedsData){
-            var result = group(feedsData, 4);
+            
+            var result = $filter('orderBy')(feedsData, function(arg) {
+            return ""+arg.position;
+        });
+            result = group(result, 3);
+
             $scope.feedsDataDisplay = result;
         }, true);
 
@@ -92,12 +98,15 @@ angular.module('controllers', []).
             $scope.radarImage = null;
             $scope.position = {};
             $scope.showAlertsIcon = false;
+            $scope.forecast = [];
+            $scope.showForecast = false;
 
             var getPosition = function(){
                 if (navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(function(pos){
                         getCurrentConditions(pos);
                         getAlerts(pos);
+                        getForecast(pos);
                         $scope.position = pos;
                     });
                     return true;        
@@ -136,6 +145,27 @@ angular.module('controllers', []).
                     function(){})
             }
 
+            var getForecast = function(position){
+                weatherService.getForecast(position, 
+                    function(response){
+                        if (!response.forecast)
+                            return;
+                        
+                        var day = response.forecast.simpleforecast.forecastday;
+                        for (var i=0; i<=3; i++){
+                            $scope.forecast.push(day[i]);
+                        }
+                    
+                     }, 
+                    function(){
+
+                    });
+            }
+
+            $scope.setShowForecast = function(){
+                $scope.showForecast = $scope.showForecast?false:true
+            }
+            
             getPosition();
             
             
