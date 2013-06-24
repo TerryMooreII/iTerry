@@ -2,7 +2,7 @@
 <html lang="en" ng-app="home" ng-cloak>
 <head>
   <meta charset="utf-8">
-  <title>My AngularJS App</title>
+  <title>iTerry</title>
   <link rel="stylesheet" href="css/app.css"/>
   <link rel="stylesheet" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
@@ -25,7 +25,7 @@
         <a class="brand" href="#">iTerry</a>
    
         <!-- Everything you want hidden at 940px or less, place within here -->
-        <div class="nav-collapse collapse" ng-controller="LinksController">
+        <div class="nav-collapse collapse" ng-controller="LinksController" ng-init="getAll()">
           <ul class="nav">
             <li ng-Repeat="link in links">
               <a href="{{link.url}}" target="_blank">{{link.title}}</a>
@@ -33,7 +33,10 @@
           </ul>
           <ul class="nav pull-right">
             <li>
-              <a href="#/addFeed" data-toggle="modal" data-target="#add-modify-feed-modal"><i class="icon-plus"></i> Add Feed</a>
+              <a href="#" data-toggle="modal" data-target="#add-modify-feed-modal"><i class="icon-plus"></i> Feed</a>
+            </li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#add-modify-link-modal"><i class="icon-plus"></i> Link</a>
             </li> 
           </ul>
         </div> 
@@ -51,7 +54,7 @@
           </div>
         </form>
       </div>
-      <div class="pull-right"  ng-controller="WeatherController" style="color:#999999;margin-top:10px;margin-right:10px">
+      <div class="pull-right"  ng-controller="WeatherController" ng-init="getPosition(true)" style="color:#999999;margin-top:10px;margin-right:10px">
         
         <div class="pull-left" ng-show="!showForecast" >
         
@@ -93,8 +96,8 @@
       
         <div class="pull-right" style="padding-left:20px">
           <ul class="unstyled" style="font-size:10px">
-            <li class="pointer" ng-click="getRadar()" >
-              <i class="icon-cloud" rel="popover" data-original-title="{{currentConditions.display_location.full}}"></i>
+            <li class="point  er" >
+              <a href="#" bs-modal="'partials/radar-modal.html'"><i class="icon-cloud"></i></a>
             </li>
             <li class="pointer" ng-click="setShowForecast()">
               <i class="icon-calendar"></i>
@@ -110,7 +113,7 @@
   </div>
 
   <!-- Feeds -->
-  <div ng-controller="FeedsController">
+  <div ng-controller="FeedsController" ng-init="getAll()">
     <div class="row-fluid"  ng-repeat="row in feedsDataDisplay ">
       <div class="span4 feed-container"  ng-repeat="feed in row" >
         <div class="feed-header" >
@@ -134,7 +137,7 @@
 
 </div> <!--End content-->
          
-<div class="modal hide fade" id="add-modify-feed-modal" ng-controller="FeedsAddModifyController" >
+<div class="modal hide fade" id="add-modify-feed-modal" ng-controller="FeedsController" >
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>Feed</h3>
@@ -174,10 +177,58 @@
   </div>
 </div>
 
+
+
+<div class="modal hide fade" id="add-modify-link-modal" ng-controller="LinksController" >
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Feed</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+      <form class="form-horizontal" name="linkform">
+        <div class="control-group">
+          <label class="control-label" for="inputTitle">Title</label>
+          <div class="controls">
+            <input type="text" id="title" placeholder="Title" name="category" ng-model="link.title" required>
+            <span class="pull-right text-error" ng-show="linkform.category.$error.required">Required!</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="inputUrl">Feed Url</label>
+          <div class="controls">
+            <input type="text" id="inputUrl" placeholder="Url" name="url" ng-model="link.url" required>
+            <span class="pull-right text-error" ng-show="linkform.url.$error.required">Required!</span>
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label" for="inputPosition">Position</label>
+          <div class="controls">
+            <input type="number" id="inputPosition" placeholder="Position" name="position" ng-model="link.position" required>
+            <span class="pull-right text-error" ng-show="linkform.position.$error.required">Required!</span>
+          </div>
+        </div>
+      </form>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <button ng-click="saveOrUpdate()" type="button" data-dismiss="modal" class="btn btn-primary" aria-hidden="true" ng-disabled="!linkform.$valid">
+      <i class="icon-ok icon-white"></i> Save
+    </button>
+  </div>
+</div>
+
+
+<div ng-view></div>
+
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   <script src="lib/jquery-1.9.1.min.js"></script>
   <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/angularstrap.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>

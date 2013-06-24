@@ -7,18 +7,33 @@ angular.module('controllers', []).
         console.log('LinksController...');
             
         $scope.links = [];
+        $scope.link = {};
 
+        $scope.saveOrUpdate = function(){
+            console.log('LinksControll.saveOrUpdate...')
 
-        var getAll = function(){
+            var request = { link: $scope.link };
+
+            linksService.saveOrUpdate(request, function(response){
+                console.log('LinksController.saveOrUpdate Saved Successfully....');
+                $scope.link = {};
+                $scope.getAll();
+            }, 
+            function(response){
+                console.log('LinksController.saveOrUpdate failure....')
+                console.log(response)
+            });
+        }; 
+
+        $scope.getAll = function(){
+            $scope.links = [];
             linksService.getAll(function(response){
-                //console.log(response);
-                $scope.links = response.links;
-            }, function(){
-                console.log('LinksController.getLinks failure....')
+               $scope.links = response.links;
+               console.log(response)
+            }, function(response){
+                console.log('LinksController.getLinks failure.... %o', response)
             });
         };
-
-        getAll();
         
     }]).
     controller('FeedsController', ['$scope', 'feedsService', '$filter', function($scope, feedsService, $filter) {
@@ -29,8 +44,8 @@ angular.module('controllers', []).
         var orderBy = $filter('orderBy');
         var feeds = {};
         $scope.feed = {};
-        
-        var getAll = function(){
+       
+        $scope.getAll = function(){
             console.log('FeedsController.getAll...');
             feedsService.getAll(function(response){
                 //console.log(response);
@@ -45,7 +60,6 @@ angular.module('controllers', []).
         
         var getFeedsFromGoogle = function(){
             for (var i=0; i<feeds.length;i++){
-                console.log(feeds[i]);   
                 var feed = new google.feeds.Feed(feeds[i].url);
                 feed.load(function(result) {
                     if (!result.error && result.feed) {
@@ -55,42 +69,35 @@ angular.module('controllers', []).
             }; 
         };   
        
-        getAll();
-       
         $scope.toStringSort = function(arg) {
             return ""+arg.position;
         };
 
-        $scope.$watch('feedsData', function(feedsData){
-            
+        $scope.$watch('feedsData', function(feedsData){   
             var result = $filter('orderBy')(feedsData, function(arg) {
-            return ""+arg.position;
-        });
+                return ""+arg.position;
+            });
             result = group(result, 3);
-
             $scope.feedsDataDisplay = result;
         }, true);
 
-    }])
-    .controller('FeedsAddModifyController', ['$scope', 'feedsService', '$filter', function($scope, feedsService, $filter) {
-        $scope.feed;
-
+        
         $scope.saveOrUpdate = function(){
             console.log('FeedsControll.saveOrUpdate...')
-
             var request = { feed: $scope.feed };
             
             feedsService.saveOrUpdate(request, function(response){
                 console.log('FeedsController.saveOrUpdate Saved Successfully....')
                 console.log(response);
+                $scope.feed = {};
+                $scope.getAll();
             }, 
             function(response){
                 console.log('FeedsController.saveOrUpdate failure....')
                 console.log(response)
             });
         };
-        
-    }])    
+    }])   
     .controller('WeatherController', ['$scope', 'weatherService', function($scope, weatherService) {
         console.log('WeatherController...');
             
@@ -101,12 +108,14 @@ angular.module('controllers', []).
             $scope.forecast = [];
             $scope.showForecast = false;
 
-            var getPosition = function(){
+            $scope.getPosition = function(load){
                 if (navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(function(pos){
-                        getCurrentConditions(pos);
-                        getAlerts(pos);
-                        getForecast(pos);
+                        if (load){
+                            getCurrentConditions(pos);
+                            getAlerts(pos);
+                            getForecast(pos);
+                        }
                         $scope.position = pos;
                     });
                     return true;        
@@ -166,10 +175,6 @@ angular.module('controllers', []).
                 $scope.showForecast = $scope.showForecast?false:true
             }
             
-            getPosition();
-            
-            
-
     }]);
 
 

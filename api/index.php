@@ -54,23 +54,30 @@ function getLink($id){
 }
 
 function addLink(){
-    $request = Slim::getInstance()->request();
+    $request = \Slim\Slim::getInstance()->request();
     $link = json_decode($request->getBody());
+    
+
     $sql = "INSERT INTO links (title, url, position) VALUES (:title, :url, :position)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  
-        $stmt->bindParam("title", $link->name);
-        $stmt->bindParam("url", $link->url);
-        $stmt->bindParam("position", $link->position);
+        $stmt->bindParam("title", $link->link->title);
+        $stmt->bindParam("url", $link->link->url);
+        $stmt->bindParam("position", $link->link->position);
         $stmt->execute();
-        $wine->id = $db->lastInsertId();
+        $link->id = $db->lastInsertId();
         $db = null;
 
-    } catch(PDOException $e) {
+        $response = \Slim\Slim::getInstance()->response();
+        $response['Content-Type'] = 'application/json';
+        $response->status(200);
+        $response->body(json_encode($link));
+
+
+    } catch(Exception $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}'; 
     }
-
 }
 
 function updateLink($id){
