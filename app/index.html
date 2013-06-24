@@ -33,10 +33,10 @@
           </ul>
           <ul class="nav pull-right">
             <li>
-              <a href="#" data-toggle="modal" data-target="#add-modify-feed-modal"><i class="icon-plus"></i> Feed</a>
+              <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> Feed</a>
             </li>
             <li>
-              <a href="#" data-toggle="modal" data-target="#add-modify-link-modal"><i class="icon-plus"></i> Link</a>
+              <a href="#" bs-modal="'partials/add-modify-links-modal.html'"><i class="icon-plus"></i> Link</a>
             </li> 
           </ul>
         </div> 
@@ -103,7 +103,7 @@
               <i class="icon-calendar"></i>
             </li>
             <li>
-              <i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i>
+              <a href="#" bs-modal="'partials/alerts-modal.html'"><i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i></a>
             </li>
           </ul>
         </div>
@@ -117,7 +117,13 @@
     <div class="row-fluid"  ng-repeat="row in feedsDataDisplay ">
       <div class="span4 feed-container"  ng-repeat="feed in row" >
         <div class="feed-header" >
-          <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
+          <div class="pull-left">
+            <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
+          </div>
+          <div class="pull-right feed-header-actions">
+            <i class="icon-edit"></i>
+            <i class="icon-trash" style="color:#b94a48"></i>
+          </div>
         </div>
         <div class="feed-body" >
           <ul>
@@ -129,104 +135,20 @@
       </div>
     </div>
   </div>
-  <!--End-->
-<footer class="text-center">
-  Copyright 2013 <a href="http://terrymooreii.com">TerryMooreII.com</a>
-</footer>
+  <!--End Feeds-->
+
+  <footer class="text-center">
+    Copyright 2013 <a href="http://terrymooreii.com">TerryMooreII.com</a>
+  </footer>
 
 
 </div> <!--End content-->
-         
-<div class="modal hide fade" id="add-modify-feed-modal" ng-controller="FeedsController" >
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Feed</h3>
-  </div>
-  <div class="modal-body">
-    <p>
-      <form class="form-horizontal" name="feedform">
-        <div class="control-group">
-          <label class="control-label" for="inputUrl">Feed Url</label>
-          <div class="controls">
-            <input type="text" id="inputUrl" placeholder="Url" name="url" ng-model="feed.url" required>
-            <span class="pull-right text-error" ng-show="feedform.url.$error.required">Required!</span>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="inputUrl">Category</label>
-          <div class="controls">
-            <input type="text" id="category" placeholder="Category" name="category" ng-model="feed.category" required>
-            <span class="pull-right text-error" ng-show="feedform.category.$error.required">Required!</span>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="inputPosition">Position</label>
-          <div class="controls">
-            <input type="number" id="inputPosition" placeholder="Position" name="position" ng-model="feed.position" required>
-            <span class="pull-right text-error" ng-show="feedform.position.$error.required">Required!</span>
-          </div>
-        </div>
-      </form>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-    <button ng-click="saveOrUpdate()" type="button" data-dismiss="modal" class="btn btn-primary" aria-hidden="true" ng-disabled="!feedform.$valid">
-      <i class="icon-ok icon-white"></i> Save
-    </button>
-  </div>
-</div>
 
 
-
-<div class="modal hide fade" id="add-modify-link-modal" ng-controller="LinksController" >
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Feed</h3>
-  </div>
-  <div class="modal-body">
-    <p>
-      <form class="form-horizontal" name="linkform">
-        <div class="control-group">
-          <label class="control-label" for="inputTitle">Title</label>
-          <div class="controls">
-            <input type="text" id="title" placeholder="Title" name="category" ng-model="link.title" required>
-            <span class="pull-right text-error" ng-show="linkform.category.$error.required">Required!</span>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label" for="inputUrl">Feed Url</label>
-          <div class="controls">
-            <input type="text" id="inputUrl" placeholder="Url" name="url" ng-model="link.url" required>
-            <span class="pull-right text-error" ng-show="linkform.url.$error.required">Required!</span>
-          </div>
-        </div>
-        
-        <div class="control-group">
-          <label class="control-label" for="inputPosition">Position</label>
-          <div class="controls">
-            <input type="number" id="inputPosition" placeholder="Position" name="position" ng-model="link.position" required>
-            <span class="pull-right text-error" ng-show="linkform.position.$error.required">Required!</span>
-          </div>
-        </div>
-      </form>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-    <button ng-click="saveOrUpdate()" type="button" data-dismiss="modal" class="btn btn-primary" aria-hidden="true" ng-disabled="!linkform.$valid">
-      <i class="icon-ok icon-white"></i> Save
-    </button>
-  </div>
-</div>
-
-
-<div ng-view></div>
-
+  <script src="lib/jquery-1.9.1.min.js"></script>
+  
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
-  <script src="lib/jquery-1.9.1.min.js"></script>
   <script src="lib/bootstrap.min.js"></script>
   <script src="lib/angularstrap.min.js"></script>
   <script src="js/app.js"></script>

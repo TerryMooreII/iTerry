@@ -91,8 +91,8 @@ angular.module('services', []).
         weatherService.getRadarImage = function(position){
             var lon = position.coords.longitude; 
             var lat = position.coords.latitude;
-            var height = 280;
-            var width = 280;
+            var height = 320;
+            var width = 520;
             var radius = 100;
             return WUNDERGROUND_URL +'/radar/image.gif?centerlat=' + lat + '&centerlon=' + lon + '&radius=' + radius + '&width=' + width + 'height=' + height + '&newmaps=1' 
         };

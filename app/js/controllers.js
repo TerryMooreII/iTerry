@@ -107,6 +107,8 @@ angular.module('controllers', []).
             $scope.showAlertsIcon = false;
             $scope.forecast = [];
             $scope.showForecast = false;
+            $scope.radar = null;
+            $scope.alerts = [];
 
             $scope.getPosition = function(load){
                 if (navigator.geolocation){
@@ -115,6 +117,7 @@ angular.module('controllers', []).
                             getCurrentConditions(pos);
                             getAlerts(pos);
                             getForecast(pos);
+                            getRadar(pos);
                         }
                         $scope.position = pos;
                     });
@@ -134,11 +137,10 @@ angular.module('controllers', []).
                 } );
             };
             
-            $scope.getRadar = function(){
+            var getRadar = function(position){
                 console.log("WeatherController.getRadar Clicked...")
-                var radarImage = weatherService.getRadarImage($scope.position);
-                var src = '<img src="' + radarImage + '" />';
-                $('.icon-cloud').popover({ placement:'bottom', content: src, html:true });
+                $scope.radar = weatherService.getRadarImage(position);
+                console.log($scope.radar)
             };
 
             var getAlerts = function(position){
@@ -147,8 +149,6 @@ angular.module('controllers', []).
                         if (response.alerts && response.alerts.length > 0){
                             $scope.showAlertsIcon = true;
                             $scope.alerts = response.alerts;
-                            //TODO create a directive that will display the alert
-                           // $('.icon-cloud').popover({ placement:'bottom', title: 'Radar', content: src, html:true });              
                         }
                     }, 
                     function(){})
