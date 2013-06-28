@@ -29,10 +29,10 @@ angular.module('controllers', []).
             $scope.links = [];
             linksService.getAll(function(response){
                $scope.links = response.links;
-               console.log(response)
             }, function(response){
                 console.log('LinksController.getLinks failure.... %o', response)
             });
+
         };
         
     }]).
@@ -57,6 +57,18 @@ angular.module('controllers', []).
             });
 
         };
+
+
+        $scope.getFeed = function(id){
+            console.log('FeedsController.getAll...');
+            feedsService.get(id, function(response){
+                $scope.feed = response.feed;
+               
+            }, function(){
+                console.log('FeedsController.getFeeds failure....')
+            });
+
+        };        
         
         var getFeedsFromGoogle = function(){
             for (var i=0; i<feeds.length;i++){
@@ -70,7 +82,7 @@ angular.module('controllers', []).
         };   
        
         $scope.toStringSort = function(arg) {
-            return ""+arg.position;
+            return "" + arg.position;
         };
 
         $scope.$watch('feedsData', function(feedsData){   
@@ -98,17 +110,22 @@ angular.module('controllers', []).
             });
         };
     }])   
-    .controller('WeatherController', ['$scope', 'weatherService', function($scope, weatherService) {
+    .controller('WeatherController', ['$scope', 'weatherService', 'localStorageService', function($scope, weatherService, localStorageService) {
         console.log('WeatherController...');
             
             $scope.currentConditions = {};
             $scope.radarImage = null;
             $scope.position = {};
             $scope.showAlertsIcon = false;
-            $scope.forecast = [];
+            $scope.forecast = {};
             $scope.showForecast = false;
-            $scope.radar = null;
-            $scope.alerts = [];
+            $scope.radar = {};
+            $scope.alerts = {};
+
+            var CURRENT_CONDITIONS = 'weather-current-conditions';
+            var ALERTS = 'weather-alerts';
+            var FORECAST = 'weather-forecast';
+            var RADAR = 'weather-radar';
 
             $scope.getPosition = function(load){
                 if (navigator.geolocation){
@@ -117,7 +134,7 @@ angular.module('controllers', []).
                             getCurrentConditions(pos);
                             getAlerts(pos);
                             getForecast(pos);
-                            getRadar(pos);
+                            getRadar(pos)
                         }
                         $scope.position = pos;
                     });
@@ -130,40 +147,78 @@ angular.module('controllers', []).
 
             var getCurrentConditions = function(position){
                 console.log("WeatherController.getCurrentConditions Sending service call...")
+                
+                var cache = localStorageService.getItem(CURRENT_CONDITIONS);
+                if ( cache ){
+                    console.log("WeatherController.getCurrentConditions Loading current conditions from cache");
+                    $scope.currentConditions = localStorageService.getItem(CURRENT_CONDITIONS);
+                    return;
+                }              
+                
                 weatherService.getCurrentConditions(position, function(response){
+                    console.log("WeatherController.getCurrentConditions Loading current conditions from service");
                     $scope.currentConditions = response.current_observation;
+                    localStorageService.saveItem(CURRENT_CONDITIONS, $scope.currentConditions, true);
                 }, function(){
                     console.log("WeatherController.getCurrentConditions Failed to retieve data.")
                 } );
             };
             
             var getRadar = function(position){
-                console.log("WeatherController.getRadar Clicked...")
-                $scope.radar = weatherService.getRadarImage(position);
-                console.log($scope.radar)
+                console.log("WeatherController.getRadar Clicked...");
+                var cache = localStorageService.getItem(RADAR);
+                if ( cache ){
+                    console.log("WeatherController.getRadar Loading radar images from cache");
+                    $scope.radar = localStorageService.getItem(RADAR);
+                    return;
+                }              
+
+                $scope.radar.image = weatherService.getRadarImage(position);
+                localStorageService.saveItem(RADAR, $scope.radar, true);   
+
             };
 
             var getAlerts = function(position){
+
+                var cache = localStorageService.getItem(ALERTS);
+                if ( cache ){
+                    console.log("WeatherController.getAlerts Loading alerts from cache");
+                    $scope.alerts = localStorageService.getItem(ALERTS);
+                    return;
+                }              
+
                 weatherService.getAlerts(position, 
                     function(response){
-                        if (response.alerts && response.alerts.length > 0){
+                        console.log("WeatherController.getAlerts Loading alerts from service");
+                        if (response && response.alerts.length > 0){
                             $scope.showAlertsIcon = true;
-                            $scope.alerts = response.alerts;
+                            $scope.alerts = response;
                         }
+                        localStorageService.saveItem(ALERTS, $scope.alerts, true);
                     }, 
                     function(){})
             }
 
             var getForecast = function(position){
+                var cache = localStorageService.getItem(FORECAST);
+                if ( cache ){
+                    console.log("WeatherController.getForecast Loading forecast from cache");
+                    $scope.forecast = localStorageService.getItem(FORECAST);
+                    return;
+                }              
+
                 weatherService.getForecast(position, 
                     function(response){
+                        console.log("WeatherController.getForecast Loading forecast from service");
                         if (!response.forecast)
                             return;
                         
                         var day = response.forecast.simpleforecast.forecastday;
+                        $scope.forecast.days = []
                         for (var i=0; i<=3; i++){
-                            $scope.forecast.push(day[i]);
+                            $scope.forecast.days.push(day[i]);
                         }
+                        localStorageService.saveItem(FORECAST, $scope.forecast, true);
                     
                      }, 
                     function(){

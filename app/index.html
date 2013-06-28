@@ -80,7 +80,7 @@
 
         <div class="pull-left" ng-show="showForecast" style="margin-top:-3px">
           <ul class="unstyled inline">
-            <li ng-repeat="day in forecast">
+            <li ng-repeat="day in forecast.days">
               <ul class="unstyled text-center" style="font-size:11px">
                 <li>
                   <img width="50%" height="50%" ng-src="{{day.icon_url}}" />
@@ -121,7 +121,7 @@
             <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
           </div>
           <div class="pull-right feed-header-actions">
-            <i class="icon-edit"></i>
+            <i class="icon-edit" ng-click="getFeed(feed.id)" bs-modal="'partials/add-modify-feeds-modal.html'"></i>
             <i class="icon-trash" style="color:#b94a48"></i>
           </div>
         </div>

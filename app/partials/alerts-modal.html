@@ -5,7 +5,7 @@
   <div class="modal-body">
     
     <div data-fade="1" ngModel="activeTab" bs-tabs>
-      <div ng-repeat="alert in alerts" data-title="{{alert.description}}">
+      <div ng-repeat="alert in alerts.alerts" data-title="{{alert.description}}">
         <p>
           <strong>{{alert.description}}</strong> 
           <em class="muted">Expires: {{alert.expires}}</em> 

@@ -1,6 +1,8 @@
 
 <?php
 
+
+
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
@@ -20,9 +22,9 @@ $app->post('/feeds/:id', 'updatefeed');
 $app->delete('/feeds/:id', 'deletefeed');
 
 
-
-
 $app->run();
+
+//$isProduction = false;
 
 function getLinks() {
     $sql = "select * FROM links ORDER BY position";
@@ -178,10 +180,19 @@ function deletefeed($id){
 
 
 function getConnection() {
+    
     $dbhost="127.0.0.1";
     $dbuser="root";
     $dbpass="tlmii2";
     $dbname="home";
+
+    // if (isProduction){
+    //     $dbhost="127.0.0.1";
+    //     $dbuser="motesh_iTerry";
+    //     $dbpass="8[eF=!oFK!8R";
+    //     $dbname="iTerry";
+    // }
+
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);  
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
