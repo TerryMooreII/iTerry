@@ -159,7 +159,7 @@ angular.module('controllers', []).
                     return true;        
                 }else{
                     console.log("Geolocation is not supported by this browser.");
-                    return false
+                    return false;
                 }
             };
 
