@@ -33,12 +33,36 @@
              </li>
           </ul>
           <ul class="nav pull-right">
-            <li>
-              <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> Feed</a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 Feed
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> New</a>
+                </li>
+                <li>
+                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-edit"></i> Modify/Delete</a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <a href="#" bs-modal="'partials/add-modify-links-modal.html'"><i class="icon-plus"></i> Link</a>
-            </li> 
+          </ul>
+          <ul class="nav pull-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Link
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> New</a>
+                </li>
+                <li>
+                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-edit"></i> Modify/Delete</a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div> 
       </div>
