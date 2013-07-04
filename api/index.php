@@ -21,6 +21,8 @@ $app->post('/feeds/', 'addfeed');
 $app->post('/feeds/:id', 'updatefeed');
 $app->delete('/feeds/:id', 'deletefeed');
 
+$app->get('categories/:title', 'getOrCreateCategoryByTitle');
+
 
 $app->run();
 
@@ -135,7 +137,7 @@ function getfeed($id){
 function addfeed(){
     $request = \Slim\Slim::getInstance()->request();
     $feed = json_decode($request->getBody());
-    
+        
 
     $sql = "INSERT INTO feeds (url, position) VALUES (:url, :position)";
     try {
@@ -178,6 +180,53 @@ function deletefeed($id){
 }
 
 
+/**
+* Category
+**/
+
+
+function getOrCreateCategoryByTitle($title){
+    $category = getCategory($title);
+    if ($category == null){
+        $category = addCategory($title);
+    } 
+    echo '{"category": ' . json_encode($category) . '}';
+       
+}
+
+function getCategory($title){
+    $sql = "select * FROM category where title=:title";
+    try {
+        $db = getConnection();
+        $stmt->bindParam("title", title);
+        $stmt = $db->query($sql);
+        $category = $stmt->fetch(PDO::FETCH_OBJ);
+        $db = null;
+        //echo '{"category": ' . json_encode($category) . '}';
+        return $category;
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+
+}
+
+function addCategory($title){
+    
+    $sql = "INSERT INTO Categories (title) VALUES (:title)";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("title", $title);
+        $stmt->execute();
+        $category->id = $db->lastInsertId();
+        $db = null;
+
+        return $category;
+
+    } catch(Exception $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+}
 
 function getConnection() {
     

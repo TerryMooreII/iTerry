@@ -72,7 +72,10 @@ angular.module('services', []).
             $http.get(WEB_SERVICE_URL + '/categories/' + query)
                 .success(onSuccess).error(onFailure);
         };
-
+        categoryService.getByTitle = function(title, onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/categories/' + title)
+                .success(onSuccess).error(onFailure);
+        };
 
         return categoryService;
     }]).
@@ -93,7 +96,7 @@ angular.module('services', []).
             var lat = position.coords.latitude;
             var height = 320;
             var width = 520;
-            var radius = 100;
+            var radius = 30;
             return WUNDERGROUND_URL +'/radar/image.gif?centerlat=' + lat + '&centerlon=' + lon + '&radius=' + radius + '&width=' + width + 'height=' + height + '&newmaps=1' 
         };
 
@@ -118,7 +121,7 @@ angular.module('services', []).
         
         var searchService = {};
         
-        searchService.test = function(term, onSuccess, onFailure){
+        searchService.search = function(term, onSuccess, onFailure){
              $http.jsonp(GOOGLE_AUTOCOMPLETE_URL + '?' + 'q=' + term + '&client=chrome&callback=JSON_CALLBACK')
                 .success(onSuccess).error(onFailure)
         }

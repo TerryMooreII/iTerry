@@ -36,7 +36,7 @@ angular.module('controllers', []).
         };
         
     }]).
-    controller('FeedsController', ['$scope', 'feedsService', '$filter', function($scope, feedsService, $filter) {
+    controller('FeedsController', ['$scope', 'feedsService', '$filter', 'localStorageService', 'categoryService', function($scope, feedsService, $filter, localStorageService, categoryService) {
         console.log('FeedsController...');
             
         $scope.feedsData = [];
@@ -45,10 +45,12 @@ angular.module('controllers', []).
         var feeds = {};
         $scope.feed = {};
        
+        var FEEDS_CACHE = {};
+
         $scope.getAll = function(){
             console.log('FeedsController.getAll...');
+            
             feedsService.getAll(function(response){
-                //console.log(response);
                 feeds = response.feeds;
                 getFeedsFromGoogle();
             
@@ -60,10 +62,12 @@ angular.module('controllers', []).
 
 
         $scope.getFeed = function(id){
-            console.log('FeedsController.getAll...');
+            console.log('FeedsController.getFeed by id ' + id + '...');
+            
             feedsService.get(id, function(response){
+                
                 $scope.feed = response.feed;
-               
+                
             }, function(){
                 console.log('FeedsController.getFeeds failure....')
             });
@@ -71,11 +75,24 @@ angular.module('controllers', []).
         };        
         
         var getFeedsFromGoogle = function(){
+            var cache = localStorageService.getItem(FEEDS_CACHE);
+
+            if ( cache ){
+                $scope.feedsData = localStorageService.getItem(FEEDS_CACHE).feedsData;
+                return;
+            }
+
+            console.log("FeedsController.getFeedsFromGoogle Loading feeds from Service");
+
             for (var i=0; i<feeds.length;i++){
+                
                 var feed = new google.feeds.Feed(feeds[i].url);
                 feed.load(function(result) {
                     if (!result.error && result.feed) {
-                      $scope.feedsData.push(result.feed);
+                        $scope.feedsData.push(result.feed);
+                        var feedsCache = {};
+                        feedsCache.feedsData = $scope.feedsData
+                        localStorageService.saveItem(FEEDS_CACHE, feedsCache, true);
                     }
                 });
             }; 
@@ -97,10 +114,10 @@ angular.module('controllers', []).
         $scope.saveOrUpdate = function(){
             console.log('FeedsControll.saveOrUpdate...')
             var request = { feed: $scope.feed };
-            
             feedsService.saveOrUpdate(request, function(response){
                 console.log('FeedsController.saveOrUpdate Saved Successfully....')
                 console.log(response);
+                localStorageService.removeItem(FEEDS_CACHE);
                 $scope.feed = {};
                 $scope.getAll();
             }, 
@@ -109,6 +126,7 @@ angular.module('controllers', []).
                 console.log(response)
             });
         };
+
     }])   
     .controller('WeatherController', ['$scope', 'weatherService', 'localStorageService', function($scope, weatherService, localStorageService) {
         console.log('WeatherController...');
@@ -146,7 +164,6 @@ angular.module('controllers', []).
             };
 
             var getCurrentConditions = function(position){
-                console.log("WeatherController.getCurrentConditions Sending service call...")
                 
                 var cache = localStorageService.getItem(CURRENT_CONDITIONS);
                 if ( cache ){
@@ -154,6 +171,8 @@ angular.module('controllers', []).
                     $scope.currentConditions = localStorageService.getItem(CURRENT_CONDITIONS);
                     return;
                 }              
+
+                console.log("WeatherController.getCurrentConditions Sending service call...")
                 
                 weatherService.getCurrentConditions(position, function(response){
                     console.log("WeatherController.getCurrentConditions Loading current conditions from service");
@@ -230,6 +249,25 @@ angular.module('controllers', []).
                 $scope.showForecast = $scope.showForecast?false:true
             }
             
+    }])
+    .controller('SearchController', ['$scope', 'searchService', function($scope, searchService) {
+        
+        $scope.query = undefined;
+        $scope.results = null;
+
+        $scope.search = function(){
+            searchService.search($scope.query, 
+            function(response){
+                console.log('SearchController.search Results...')
+                console.log(response[1]);
+                $scope.results = response[1];
+            }, 
+            function(){
+                console.log('SearchController.search Error...')
+            });    
+        }
+        
+
     }]);
 
 

@@ -1,3 +1,7 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
 .row-fluid{
     margin-bottom:10px;
 }
