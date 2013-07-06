@@ -45,7 +45,7 @@ angular.module('controllers', []).
         var feeds = {};
         $scope.feed = {};
        
-        var FEEDS_CACHE = {};
+        var FEEDS_CACHE = 'feeds-cache';
 
         $scope.getAll = function(){
             console.log('FeedsController.getAll...');
@@ -184,7 +184,7 @@ angular.module('controllers', []).
             };
             
             var getRadar = function(position){
-                console.log("WeatherController.getRadar Clicked...");
+                console.log("WeatherController.getRadar...");
                 var cache = localStorageService.getItem(RADAR);
                 if ( cache ){
                     console.log("WeatherController.getRadar Loading radar images from cache");
@@ -210,8 +210,8 @@ angular.module('controllers', []).
                     function(response){
                         console.log("WeatherController.getAlerts Loading alerts from service");
                         if (response && response.alerts.length > 0){
-                            $scope.showAlertsIcon = true;
                             $scope.alerts = response;
+                            $scope.alerts.showAlertsIcon = true;
                         }
                         localStorageService.saveItem(ALERTS, $scope.alerts, true);
                     }, 
@@ -266,9 +266,29 @@ angular.module('controllers', []).
                 console.log('SearchController.search Error...')
             });    
         }
+    }])
+    .controller('ModifyFeedsController', ['$scope', 'feedsService', 'categoryService', function($scope, feedsService, categoryService) {
+        console.log('ModifyFeedsdController Loaded...')
         
+        $scope.categories;
 
-    }]);
+        $scope.init = function(){
+            $scope.getCategories();
+        }
+
+        $scope.getCategories = function(){
+            categoryService.get(function(response){
+                    console.log('ModifyFeedsdController.getCategories Getting categories.')
+                    console.log(response);
+                    $scope.categories = response.categories;
+                }, 
+                function(){
+                    console.log('ModifyFeedsdController.getCategories Getting categories failed.')
+                })
+        }
+
+    }])
+ ;
 
 
 

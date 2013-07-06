@@ -35,15 +35,15 @@
           <ul class="nav pull-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                 Feed
+                 Feeds
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> New</a>
+                  <a href="#" bs-modal="'partials/add-feeds-modal.html'"><i class="icon-plus"></i> New</a>
                 </li>
                 <li>
-                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-edit"></i> Modify/Delete</a>
+                  <a href="#/modify-feeds.html"><i class="icon-edit"></i> Modify/Delete</a>
                 </li>
               </ul>
             </li>
@@ -51,15 +51,15 @@
           <ul class="nav pull-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Link
+                Links
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-plus"></i> New</a>
+                  <a href="#" bs-modal="'partials/add-modify-links-modal.html'"><i class="icon-plus"></i> New</a>
                 </li>
                 <li>
-                  <a href="#" bs-modal="'partials/add-modify-feeds-modal.html'"><i class="icon-edit"></i> Modify/Delete</a>
+                  <a href="#" bs-modal="'partials/modify-links-modal.html'"><i class="icon-edit"></i> Modify/Delete</a>
                 </li>
               </ul>
             </li>
@@ -69,7 +69,7 @@
     </div>
   </div>
 
-  <div class="row-fluid">
+  <div class="row-fluid pull-right" >
     <div class="span12 well" style="margin-top:35px">
       <div class="container">
         <div class="pull-left">
@@ -81,6 +81,7 @@
             </div>
           </form>
         </div>
+
         <div class="pull-right"  ng-controller="WeatherController" ng-init="getPosition(true)" style="color:#999999;margin-top:10px;margin-right:20px">
           
           <div class="pull-left" ng-show="!showForecast" >
@@ -102,7 +103,6 @@
                 <li>Humidity {{ currentConditions.relative_humidity }} </li>
               </ul>
             </div>
-          
           </div>
 
           <div class="pull-left" ng-show="showForecast" style="margin-top:-3px">
@@ -120,49 +120,28 @@
               </li>
             </ul>
           </div>
-      
-        <div class="pull-right" style="padding-left:20px">
-          <ul class="unstyled" style="font-size:10px">
-            <li class="point  er" >
-              <a href="#" bs-modal="'partials/radar-modal.html'"><i class="icon-cloud"></i></a>
-            </li>
-            <li class="pointer" ng-click="setShowForecast()">
-              <i class="icon-calendar"></i>
-            </li>
-            <li>
-              <a href="#" bs-modal="'partials/alerts-modal.html'"><i class="icon-warning-sign" ng-show="showAlertsIcon" style="color:red"></i></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-  <div class="container">
-    <!-- Feeds -->
-    <div ng-controller="FeedsController" ng-init="getAll()">
-      <div class="row-fluid"  ng-repeat="row in feedsDataDisplay ">
-        <div class="span4 feed-container"  ng-repeat="feed in row" >
-          <div class="feed-header" >
-            <div class="pull-left">
-              <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
-            </div>
-            <div class="pull-right feed-header-actions">
-              <i class="icon-edit" ng-click="getFeed(feed.id)" bs-modal="'partials/add-modify-feeds-modal.html'"></i>
-              <i class="icon-trash" style="color:#b94a48"></i>
-            </div>
-          </div>
-          <div class="feed-body" >
-            <ul>
-              <li ng-repeat="entry in feed.entries">
-                <a href="{{entry.link}}">{{entry.title}}</a>
+
+          <div class="pull-right" style="padding-left:20px">
+            <ul class="unstyled" style="font-size:10px">
+              <li class="point  er" >
+                <a href="#" bs-modal="'partials/radar-modal.html'"><i class="icon-cloud"></i></a>
+              </li>
+              <li class="pointer" ng-click="setShowForecast()">
+                <i class="icon-calendar"></i>
+              </li>
+              <li>
+                <a href="#" bs-modal="'partials/alerts-modal.html'"><i class="icon-warning-sign" ng-show="alerts.showAlertsIcon" style="color:red"></i></a>
               </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <!--End Feeds-->
+  </div>
+
+  <div class="container">
+    <div ng-view>
+    </div>
   </div> <!--End container-->
 
   <footer class="text-center">

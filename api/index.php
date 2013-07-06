@@ -21,7 +21,8 @@ $app->post('/feeds/', 'addfeed');
 $app->post('/feeds/:id', 'updatefeed');
 $app->delete('/feeds/:id', 'deletefeed');
 
-$app->get('categories/:title', 'getOrCreateCategoryByTitle');
+$app->get('/categories', 'getAllCategory');
+//$app->get('/categories/:title', 'getCategoryById');
 
 
 $app->run();
@@ -185,34 +186,38 @@ function deletefeed($id){
 **/
 
 
-function getOrCreateCategoryByTitle($title){
-    $category = getCategory($title);
-    if ($category == null){
-        $category = addCategory($title);
-    } 
-    echo '{"category": ' . json_encode($category) . '}';
-       
-}
-
-function getCategory($title){
-    $sql = "select * FROM category where title=:title";
+function getAllCategory(){
+    $sql = "select * FROM categories";
     try {
         $db = getConnection();
-        $stmt->bindParam("title", title);
         $stmt = $db->query($sql);
-        $category = $stmt->fetch(PDO::FETCH_OBJ);
+        $category = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
-        //echo '{"category": ' . json_encode($category) . '}';
-        return $category;
+        echo '{"categories": ' . json_encode($category) . '}';
+        
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
+}
 
+function getCategoryById($id){
+    $sql = "select * FROM categories where id=:id";
+    try {
+        $db = getConnection();
+        $stmt->bindParam("id", id);
+        $stmt = $db->query($sql);
+        $category = $stmt->fetch(PDO::FETCH_OBJ);
+        $db = null;
+        echo '{"categories": ' . json_encode($category) . '}';
+        
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
 }
 
 function addCategory($title){
     
-    $sql = "INSERT INTO Categories (title) VALUES (:title)";
+    $sql = "INSERT INTO categories (title) VALUES (:title)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  

@@ -68,12 +68,13 @@ angular.module('services', []).
     service('categoryService', ['$http',  function($http){
         var categoryService = {}
         
-        categoryService.get = function(query, onSuccess, onFailure){
-            $http.get(WEB_SERVICE_URL + '/categories/' + query)
+        categoryService.get = function(onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/categories')
                 .success(onSuccess).error(onFailure);
         };
-        categoryService.getByTitle = function(title, onSuccess, onFailure){
-            $http.get(WEB_SERVICE_URL + '/categories/' + title)
+       
+        categoryService.getById = function(id, onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/categories/' + id)
                 .success(onSuccess).error(onFailure);
         };
 
