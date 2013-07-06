@@ -1,0 +1,24 @@
+<!-- Feeds -->
+    <div ng-controller="FeedsController" ng-init="getAll()">
+      <div class="row-fluid"  ng-repeat="row in feedsDataDisplay ">
+        <div class="span4 feed-container"  ng-repeat="feed in row" >
+          <div class="feed-header" >
+            <div class="pull-left">
+              <a href="{{feed.link}}" title="feed.description">{{feed.title}}</a>
+            </div>
+            <div class="pull-right feed-header-actions">
+              <i class="icon-edit" ng-click="getFeed(feed.id)" bs-modal="'partials/add-modify-feeds-modal.html'"></i>
+              <i class="icon-trash" style="color:#b94a48"></i>
+            </div>
+          </div>
+          <div class="feed-body" >
+            <ul>
+              <li ng-repeat="entry in feed.entries">
+                <a href="{{entry.link}}">{{entry.title}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Feeds-->

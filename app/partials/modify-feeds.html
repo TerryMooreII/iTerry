@@ -1,0 +1,39 @@
+<div ng-init="init()">
+
+    <div class="well">
+        <div class="input-append">
+          Add Category 
+          <input class="span6" type="text" placeholder="Category Name">
+          <button class="btn" type="button">Add</button>
+        </div>
+    </div>
+
+    <div data-fade="1" ngModel="activeTab" bs-tabs>
+        <div ng-repeat="category in categories" data-title="{{category.title}}">
+            <p class="form-inline">
+                Category Name
+                {{category.title}}
+                <input class="span6" type="text" placeholder="Category Name" ng-value="{{category.title}}">
+                <div class="pull-right">
+                    <button class="btn" type="button">Modify</button>
+                    <button class="btn btn-danger" type="button">Delete</button>    
+                </div>
+            </p>
+            <ul class="unstyled">
+                <li ng-repeat="feed in feeds">
+                    <div class="form-inline">
+                        <input class="span6" type="text" placeholder="Feed URL" ng-value="{{category.title}}">
+                        
+                        <select ng-model="category" ng-options="c.title for c in categories">
+                            <option value="">-- chose category --</option>
+                        </select>
+                        <div class="pull-right">
+                            <button class="btn" type="button">Modify</button>
+                            <button class="btn btn-danger" type="button">Delete</button>    
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div> 
+</div>
