@@ -17,12 +17,15 @@ $app->delete('/links/:id', 'deleteLink');
  
 $app->get('/feeds', 'getfeeds');
 $app->get('/feeds/:id', 'getfeed');
+$app->get('/feeds/category/:id', 'getfeedsByCategoryId');
+
 $app->post('/feeds/', 'addfeed');
-$app->post('/feeds/:id', 'updatefeed');
+$app->put('/feeds/:feedId/category/:categoryId', 'updateFeed');
 $app->delete('/feeds/:id', 'deletefeed');
 
 $app->get('/categories', 'getAllCategory');
 //$app->get('/categories/:title', 'getCategoryById');
+$app->post('/categories/:title', 'addCategory');
 
 
 $app->run();
@@ -119,6 +122,21 @@ function getfeeds() {
     }
 }
 
+function getfeedsByCategoryId($id) {
+    $sql = "SELECT * FROM feeds WHERE category_id = :id ORDER BY position";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        $feeds = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo '{"feeds": ' . json_encode($feeds) . '}';
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
 function getfeed($id){
     $sql = "select * FROM feeds where id=:id";
     try {
@@ -162,7 +180,27 @@ function addfeed(){
 
 }
 
-function updatefeed($id){
+function updateFeed($feedId, $categoryId){
+   
+    $sql = "UPDATE feeds SET category_id = :categoryId WHERE feed_id = :feedId";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("categoryId", $categoryId);
+        $stmt->bindParam("feedId", $feedId);
+        $stmt->execute();
+        //$feed->id = $db->lastInsertId();
+        $db = null;
+
+        $response = \Slim\Slim::getInstance()->response();
+        $response['Content-Type'] = 'application/json';
+        $response->status(200);
+        $response->body("{}");
+
+
+    } catch(Exception $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }    
 
 }
 
@@ -223,11 +261,16 @@ function addCategory($title){
         $stmt = $db->prepare($sql);  
         $stmt->bindParam("title", $title);
         $stmt->execute();
-        $category->id = $db->lastInsertId();
+        //$category->id = $db->lastInsertId();
         $db = null;
 
-        return $category;
+        $response = \Slim\Slim::getInstance()->response();
+        $response['Content-Type'] = 'application/json';
+        $response->status(200);
+        $response->body("");
 
+        //echo '{"categories": ' . json_encode($category) . '}';
+        
     } catch(Exception $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}'; 
     }

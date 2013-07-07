@@ -271,9 +271,12 @@ angular.module('controllers', []).
         console.log('ModifyFeedsdController Loaded...')
         
         $scope.categories;
+        $scope.feeds;
+        $scope.newCategory;
 
         $scope.init = function(){
             $scope.getCategories();
+            $scope.getFeeds();
         }
 
         $scope.getCategories = function(){
@@ -285,6 +288,55 @@ angular.module('controllers', []).
                 function(){
                     console.log('ModifyFeedsdController.getCategories Getting categories failed.')
                 })
+        }
+
+        $scope.getFeeds = function(){
+            console.log('ModifyFeedsdController.getFeedsByCategoryId...');
+            
+            feedsService.getAll(function(response){
+                $scope.feeds = response.feeds;
+            
+            }, function(){
+                console.log('ModifyFeedsdController.getFeeds failure....')
+            });
+
+        };
+
+        $scope.addCategory = function(){
+            console.log('ModifyFeedsdController.addCategory...');
+            console.log("New Category Name: " + $scope.newCategory)
+
+            if (!$scope.newCategory)
+                return;
+
+            categoryService.add($scope.newCategory,
+                function(response){
+                    $scope.init();
+                    $scope.newCategory = null;
+                }, function(response){
+                    console.log('ModifyFeedsdController.addCategory failure....')
+                    console.log(response);
+                });
+
+        };
+
+        $scope.updateFeedCategory = function(feedId, categoryId){
+            console.log('Feed Id: ' + feedId);
+            console.log('Category Id: ' + categoryId);
+
+            var request = {
+                feedId:feedId, 
+                categoryId: categoryId
+            }
+
+            feedsService.update(request, function(response){
+                //$scope.feeds = response.feeds;
+            
+            }, function(){
+                console.log('ModifyFeedsdController.getFeeds failure....')
+            });
+
+
         }
 
     }])

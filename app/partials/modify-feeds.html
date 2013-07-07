@@ -1,39 +1,47 @@
 <div ng-init="init()">
 
     <div class="well">
-        <div class="input-append">
-          Add Category 
-          <input class="span6" type="text" placeholder="Category Name">
-          <button class="btn" type="button">Add</button>
+        <div class="form-inline">  
+            <span>Add New Category </span> 
+            <div class="input-append">
+              <input class="span6" type="text" ng-model="newCategory" placeholder="Category Name">
+              <button class="btn" type="button" ng-click="addCategory()"><i class="icon-plus"></i> Add</button>
+            </div>
         </div>
     </div>
 
     <div data-fade="1" ngModel="activeTab" bs-tabs>
         <div ng-repeat="category in categories" data-title="{{category.title}}">
             <p class="form-inline">
-                Category Name
-                {{category.title}}
-                <input class="span6" type="text" placeholder="Category Name" ng-value="{{category.title}}">
+                <div class="pull-left">
+                    <span>Category Name</span>
+                    <input class="span6" type="text" placeholder="Category Name" ng-model="category.title">
+                </div>
                 <div class="pull-right">
                     <button class="btn" type="button">Modify</button>
                     <button class="btn btn-danger" type="button">Delete</button>    
                 </div>
             </p>
+            
+            <div class="clearfix"></div>
+            <hr />
+
             <ul class="unstyled">
-                <li ng-repeat="feed in feeds">
+                <li ng-repeat="feed in feeds | filter:{category_id:category.category_id}">
                     <div class="form-inline">
-                        <input class="span6" type="text" placeholder="Feed URL" ng-value="{{category.title}}">
+                        <span class="span6">{{feed.url}}</span>
                         
-                        <select ng-model="category" ng-options="c.title for c in categories">
+                        <select ng-model="feed.category_id" ng-options="c.category_id as c.title for c in categories" ng-change="updateFeedCategory(feed.feed_id, feed.category_id)">
                             <option value="">-- chose category --</option>
                         </select>
+
                         <div class="pull-right">
-                            <button class="btn" type="button">Modify</button>
                             <button class="btn btn-danger" type="button">Delete</button>    
                         </div>
                     </div>
                 </li>
             </ul>
+            <hr />
         </div>
     </div> 
 </div>

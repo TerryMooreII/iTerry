@@ -47,6 +47,11 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure)
         };
 
+        feedsService.getByCategoryId = function(categoryId, onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/feeds/category/' + categoryId)
+                .success(onSuccess).error(onFailure)
+        };
+
         feedsService.get = function(id, onSuccess, onFailure){
             $http.get(WEB_SERVICE_URL + '/feeds/' + id)
                 .success(onSuccess).error(onFailure)
@@ -56,6 +61,12 @@ angular.module('services', []).
             $http.post(WEB_SERVICE_URL + '/feeds', request)
                 .success(onSuccess).error(onFailure);
         };
+
+        feedsService.update = function(request, onSuccess, onFailure){
+            $http.put(WEB_SERVICE_URL + '/feeds/'+ request.feedId + '/category/' + request.categoryId)
+                .success(onSuccess).error(onFailure);
+        };
+
 
         feedsService.delete = function(id, onSuccess, onFailure){
             $http.delete(WEB_SERVICE_URL + '/feeds/' + id)
@@ -75,6 +86,11 @@ angular.module('services', []).
        
         categoryService.getById = function(id, onSuccess, onFailure){
             $http.get(WEB_SERVICE_URL + '/categories/' + id)
+                .success(onSuccess).error(onFailure);
+        };
+
+        categoryService.add = function(title, onSuccess, onFailure){
+            $http.post(WEB_SERVICE_URL + '/categories/' + title)
                 .success(onSuccess).error(onFailure);
         };
 
