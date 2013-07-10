@@ -44,8 +44,14 @@ angular.module('controllers', []).
         var orderBy = $filter('orderBy');
         var feeds = {};
         $scope.feed = {};
-       
+        $scope.categories;
+
         var FEEDS_CACHE = 'feeds-cache';
+
+        $scope.init = function(){
+            $scope.getAll();
+            $scope.getCategories();
+        }
 
         $scope.getAll = function(){
             console.log('FeedsController.getAll...');
@@ -59,6 +65,16 @@ angular.module('controllers', []).
             });
 
         };
+
+        $scope.getCategories = function(){
+            categoryService.get(function(response){
+                    console.log('FeedsdController.getCategories Getting categories.')
+                    $scope.categories = response.categories;
+                }, 
+                function(){
+                    console.log('ModifyFeedsdController.getCategories Getting categories failed.')
+                })
+        }
 
 
         $scope.getFeed = function(id){
@@ -85,19 +101,24 @@ angular.module('controllers', []).
             console.log("FeedsController.getFeedsFromGoogle Loading feeds from Service");
 
             for (var i=0; i<feeds.length;i++){
-                
                 var feed = new google.feeds.Feed(feeds[i].url);
-                feed.load(function(result) {
-                    if (!result.error && result.feed) {
-                        $scope.feedsData.push(result.feed);
-                        var feedsCache = {};
-                        feedsCache.feedsData = $scope.feedsData
-                        localStorageService.saveItem(FEEDS_CACHE, feedsCache, true);
-                    }
-                });
+                feed.load(callback(feeds[i]));
             }; 
         };   
-       
+        
+        var callback = function(feed) {
+            return function(result) {
+                if (!result.error && result.feed) {
+                    result.feed.db = feed;
+                    $scope.feedsData.push(result.feed);
+                    var feedsCache = {};
+                    feedsCache.feedsData = $scope.feedsData
+                    localStorageService.saveItem(FEEDS_CACHE, feedsCache, true);
+                }
+            };
+        }
+        
+
         $scope.toStringSort = function(arg) {
             return "" + arg.position;
         };
@@ -107,6 +128,7 @@ angular.module('controllers', []).
                 return ""+arg.position;
             });
             result = group(result, 3);
+            result.sort()
             $scope.feedsDataDisplay = result;
         }, true);
 

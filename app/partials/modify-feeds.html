@@ -18,8 +18,8 @@
                     <input class="span6" type="text" placeholder="Category Name" ng-model="category.title">
                 </div>
                 <div class="pull-right">
-                    <button class="btn" type="button">Modify</button>
-                    <button class="btn btn-danger" type="button">Delete</button>    
+                    <button class="btn  btn-small" type="button"><i class="icon-save"></i></button>
+                    <button class="btn btn-danger btn-small" type="button"><i class="icon-remove"></i></button>    
                 </div>
             </p>
             
@@ -27,7 +27,7 @@
             <hr />
 
             <ul class="unstyled">
-                <li ng-repeat="feed in feeds | filter:{category_id:category.category_id}">
+                <li ng-repeat="feed in feeds | filter:{category_id:category.category_id}" style="margin-bottom:15px">
                     <div class="form-inline">
                         <span class="span6">{{feed.url}}</span>
                         
@@ -36,7 +36,7 @@
                         </select>
 
                         <div class="pull-right">
-                            <button class="btn btn-danger" type="button">Delete</button>    
+                            <button class="btn btn-danger btn-small" type="button"><i class="icon-remove"></i></button>    
                         </div>
                     </div>
                 </li>
