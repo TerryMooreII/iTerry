@@ -42,9 +42,10 @@ angular.module('controllers', []).
         $scope.feedsData = [];
         var group = $filter('group');
         var orderBy = $filter('orderBy');
-        var feeds = {};
+        $scope.feeds = {};
         $scope.feed = {};
         $scope.categories;
+        $scope.newCategory;
 
         var FEEDS_CACHE = 'feeds-cache';
 
@@ -57,7 +58,7 @@ angular.module('controllers', []).
             console.log('FeedsController.getAll...');
             
             feedsService.getAll(function(response){
-                feeds = response.feeds;
+                $scope.feeds = response.feeds;
                 getFeedsFromGoogle();
             
             }, function(){
@@ -99,7 +100,8 @@ angular.module('controllers', []).
             }
 
             console.log("FeedsController.getFeedsFromGoogle Loading feeds from Service");
-
+            var feeds = $scope.feeds;
+            
             for (var i=0; i<feeds.length;i++){
                 var feed = new google.feeds.Feed(feeds[i].url);
                 feed.load(callback(feeds[i]));
@@ -148,6 +150,41 @@ angular.module('controllers', []).
                 console.log(response)
             });
         };
+
+        $scope.addCategory = function(){
+            console.log('ModifyFeedsdController.addCategory...');
+            console.log("New Category Name: " + $scope.newCategory)
+
+            if (!$scope.newCategory)
+                return;
+
+            categoryService.add($scope.newCategory,
+                function(response){
+                    $scope.init();
+                    $scope.newCategory = null;
+                }, function(response){
+                    console.log('ModifyFeedsdController.addCategory failure....')
+                    console.log(response);
+                });
+
+        };
+
+        $scope.updateFeedCategory = function(feedId, categoryId){
+            console.log('Feed Id: ' + feedId);
+            console.log('Category Id: ' + categoryId);
+
+            var request = {
+                feedId:feedId, 
+                categoryId: categoryId
+            }
+
+            feedsService.update(request, function(response){
+                //$scope.feeds = response.feeds;
+            
+            }, function(){
+                console.log('ModifyFeedsdController.getFeeds failure....')
+            });
+        }
 
     }])   
     .controller('WeatherController', ['$scope', 'weatherService', 'localStorageService', function($scope, weatherService, localStorageService) {
@@ -288,79 +325,6 @@ angular.module('controllers', []).
                 console.log('SearchController.search Error...')
             });    
         }
-    }])
-    .controller('ModifyFeedsController', ['$scope', 'feedsService', 'categoryService', function($scope, feedsService, categoryService) {
-        console.log('ModifyFeedsdController Loaded...')
-        
-        $scope.categories;
-        $scope.feeds;
-        $scope.newCategory;
-
-        $scope.init = function(){
-            $scope.getCategories();
-            $scope.getFeeds();
-        }
-
-        $scope.getCategories = function(){
-            categoryService.get(function(response){
-                    console.log('ModifyFeedsdController.getCategories Getting categories.')
-                    console.log(response);
-                    $scope.categories = response.categories;
-                }, 
-                function(){
-                    console.log('ModifyFeedsdController.getCategories Getting categories failed.')
-                })
-        }
-
-        $scope.getFeeds = function(){
-            console.log('ModifyFeedsdController.getFeedsByCategoryId...');
-            
-            feedsService.getAll(function(response){
-                $scope.feeds = response.feeds;
-            
-            }, function(){
-                console.log('ModifyFeedsdController.getFeeds failure....')
-            });
-
-        };
-
-        $scope.addCategory = function(){
-            console.log('ModifyFeedsdController.addCategory...');
-            console.log("New Category Name: " + $scope.newCategory)
-
-            if (!$scope.newCategory)
-                return;
-
-            categoryService.add($scope.newCategory,
-                function(response){
-                    $scope.init();
-                    $scope.newCategory = null;
-                }, function(response){
-                    console.log('ModifyFeedsdController.addCategory failure....')
-                    console.log(response);
-                });
-
-        };
-
-        $scope.updateFeedCategory = function(feedId, categoryId){
-            console.log('Feed Id: ' + feedId);
-            console.log('Category Id: ' + categoryId);
-
-            var request = {
-                feedId:feedId, 
-                categoryId: categoryId
-            }
-
-            feedsService.update(request, function(response){
-                //$scope.feeds = response.feeds;
-            
-            }, function(){
-                console.log('ModifyFeedsdController.getFeeds failure....')
-            });
-
-
-        }
-
     }])
  ;
 
