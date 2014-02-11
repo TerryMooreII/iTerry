@@ -99,6 +99,11 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure);
         };
 
+        readerService.delete = function(id, onSuccess, onFailure){
+            $http.delete(WEB_SERVICE_URL + '/feeds/' + id)
+                .success(onSuccess).error(onFailure);
+        };
+
         return readerService;
 
     }]).    

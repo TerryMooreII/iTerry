@@ -222,6 +222,14 @@ angular.module('controllers', []).
             $scope.story = entry;
         }
 
+        $scope.removeFeed = function(id){
+            readerService.delete(id, function(){
+                getAll();
+            }, function(){
+                
+            });
+        };
+
         $scope.addFeed = function(){
             readerService.getFeedFromGoogle($scope.feedUrl, function(json){
                 if (json === null || json.responseStatus !== 200 ){
