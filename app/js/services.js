@@ -6,6 +6,8 @@ var WEB_SERVICE_URL = 'http://localhost/home/api/index.php';
 //var WEB_SERVICE_URL = 'http://terrymooreii.com/iTerry/api/index.php';
 var WUNDERGROUND_URL = 'http://api.wunderground.com/api/fddd0e97a864818a';
 var GOOGLE_AUTOCOMPLETE_URL = 'http://suggestqueries.google.com/complete/search';
+var GOOGLE_FEED_RESULT_COUNT = 20;
+var GOOGLE_FEED_API_URL = 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=JSON_CALLBACK&num='+ GOOGLE_FEED_RESULT_COUNT +'&q=';
 
 angular.module('services', []).
     service('linksService', ['$http',  function($http){
@@ -76,6 +78,30 @@ angular.module('services', []).
         return feedsService;
 
     }]).
+    service('readerService', ['$http',  function($http){
+        
+        console.log('ReaderService...');
+
+        var readerService = {};
+
+        readerService.getAll = function(onSuccess, onFailure){
+            $http.get(WEB_SERVICE_URL + '/feeds')
+                .success(onSuccess).error(onFailure)
+        };
+
+        readerService.add = function(request, onSuccess, onFailure){
+            $http.post(WEB_SERVICE_URL + '/feeds', request)
+                .success(onSuccess).error(onFailure);
+        };
+
+        readerService.getFeedFromGoogle = function(feedUrl, onSuccess, onFailure){
+            $http.jsonp(GOOGLE_FEED_API_URL + feedUrl)
+                .success(onSuccess).error(onFailure);
+        };
+
+        return readerService;
+
+    }]).    
     service('categoryService', ['$http',  function($http){
         var categoryService = {}
         

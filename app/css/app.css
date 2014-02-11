@@ -2,7 +2,88 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.row-fluid{
+#feeds{
+    background-color:#333;
+    color:#fffddd;
+    min-height: 500px;
+    padding: 20px 5px;
+}
+
+#feeds form{
+    margin-bottom: 35px
+}
+
+#feeds form input{
+    width:65%;
+    background-color: #ccc
+}
+
+#feeds li{
+    cursor: pointer;
+    margin-bottom:3px;
+}
+
+#feeds img{
+    margin: 2px
+}
+
+#feed-entries{
+    border-right: 1px solid #333;
+    padding-right: 10px;
+}
+
+#feed-entries h1{
+    font-size:18px;
+    padding: 0px;
+    margin-bottom: 0px;
+}
+
+#feed-entries h2{
+    font-size:16px;
+    padding:0px;
+    margin-top: 0px;
+}
+
+#feed-entries div{
+    cursor: pointer;
+}
+
+#feed-entries ul{
+    overflow-y: auto;
+    height: 200px
+}
+
+#feed-entries div:hover{
+    text-decoration: underline;
+}
+
+.published{
+    font-style: italic;
+}
+
+#feed-story{
+
+}
+
+#feed-story div{
+    margin-top:10px;
+}
+
+#feed-story h1{
+    font-size:18px;
+    padding: 0px;
+    margin-bottom: 0px;
+}
+
+#feed-story h2{
+    font-size:16px;
+    padding:0px;
+    margin-top: 0px;
+}
+
+
+
+/*.row-fluid{
     margin-bottom:10px;
 }
 
@@ -47,7 +128,7 @@
 
 .feed-body a{
     
-}
+}*/
 
 footer{
     border:1px solid #e3e3e3;

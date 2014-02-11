@@ -1,5 +1,60 @@
 <!-- Feeds -->
-<div ng-init="init()">
+
+
+  <div class="row-fluid">
+    <div class="span2" id="feeds">
+      <form class="form-inline" ng-submit="addFeed()">
+        <input type="text" ng-model="feedUrl">
+        <button class="btn btn-small btn-primary"><i class="icon-plus"></i> Add</button>
+        <div>{{message}}</div>
+      </form>
+      <ul class="unstyled">
+        <li ng-repeat="feed in feeds" ng-click="showFeedSummary(feed.feed_url)">
+            
+          <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
+          {{feed.title}}
+        </li>
+      </ul>
+
+      <!--Sidebar content-->
+    </div>
+    <div class="span4" id="feed-entries">
+        
+        <h1><a ng-href="{{feedData.link}}">{{feedData.title}}</a></h1>
+        <h2>{{feedData.description}}</h2>
+
+        <ol class="ordered">
+          <li ng-repeat="entry in feedData.entries">
+            <div ng-click="showFullStory(entry)">
+              {{entry.title}}
+              
+            </div>
+          </li>
+        </ol>
+
+    </div>
+    <div class="span6" id="feed-story">
+        <h1><a target="_blank" ng-href="{{story.link}}">{{story.title}}</a></h1>
+        <span class="published muted">{{story.publishedDate}}</span>
+        <div ng-bind-html-unsafe="story.content"></div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div ng-init="init()">
   <div data-fade="1" ngModel="activeTab" bs-tabs>
     <div ng-repeat="category in categories" data-title="{{category.title}}">
       <div class="row-fluid"  ng-repeat="row in feedsDataDisplay">
@@ -24,5 +79,9 @@
       </div>
     </div>
   </div>
-</div>
-    <!--End Feeds-->
+</div> -->
+    <!--End Feeds -->
+
+
+
+

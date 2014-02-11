@@ -186,7 +186,77 @@ angular.module('controllers', []).
             });
         }
 
-    }])   
+    }]).
+    controller('ReaderController', ['$scope', 'readerService', '$filter', 'localStorageService', 'categoryService', function($scope, readerService, $filter, localStorageService, categoryService) {
+
+        console.log("Controllers.ReaderController Starting...");
+
+        $scope.feedUrl = '';
+        $scope.message = '';
+        $scope.feeds = [];
+        $scope.feedData = null;
+
+        var getAll = function(){
+            console.log('ReaderController.getAll...');
+            
+            readerService.getAll(function(response){
+                $scope.feeds = response.feeds;
+                
+            }, function(){
+                console.log('ReaderController.getFeeds failure....')
+            });
+
+        };
+
+        $scope.showFeedSummary = function(feedUrl){
+            readerService.getFeedFromGoogle(feedUrl, function(json){
+                console.log(json);
+                if (!json || json.responseStatus !== 200)
+                    return;
+
+                $scope.feedData = json.responseData.feed;
+            })
+        };
+
+        $scope.showFullStory = function(entry){
+            $scope.story = entry;
+        }
+
+        $scope.addFeed = function(){
+            readerService.getFeedFromGoogle($scope.feedUrl, function(json){
+                if (json === null || json.responseStatus !== 200 ){
+                    $scope.message = 'Invalid Feed Url';
+                    return;
+                }
+                var feed = json.responseData.feed;
+                var request = {
+                    title: feed.title,
+                    url: feed.link,
+                    feedUrl: feed.feedUrl
+                };
+
+                readerService.add(request, function(data){
+                    $scope.message = 'Feed Added.'
+                    $scope.feedUrl = '';
+                    setTimeout(function(){
+                        $scope.message = '';
+                    }, 1000);
+
+                    getAll();   
+                }, 
+                function(data){
+                    $scope.message = 'Error adding Feed.'
+                    console.log('Error %o', data);
+                });
+            }, 
+            function(){
+                $scope.message = 'Unable to get feed.'
+            });
+        };
+
+        getAll();
+
+    }])
     .controller('WeatherController', ['$scope', 'weatherService', 'localStorageService', function($scope, weatherService, localStorageService) {
         console.log('WeatherController...');
             

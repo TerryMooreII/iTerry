@@ -110,7 +110,7 @@ function deleteLink($id){
 */
 
 function getfeeds() {
-    $sql = "select * FROM feeds ORDER BY position";
+    $sql = "select * FROM feeds order by title";
     try {
         $db = getConnection();
         $stmt = $db->query($sql);
@@ -155,17 +155,18 @@ function getfeed($id){
 
 function addfeed(){
     $request = \Slim\Slim::getInstance()->request();
-    $feed = json_decode($request->getBody());
+    $feed = json_decode($request->getBody());   
         
 
-    $sql = "INSERT INTO feeds (url, position) VALUES (:url, :position)";
+    $sql = "INSERT INTO feeds (feed_url, url, title) VALUES (:feedUrl, :url, :title)";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  
-        $stmt->bindParam("url", $feed->feed->url);
-        $stmt->bindParam("position", $feed->feed->position);
+        $stmt->bindParam("url", $feed->url);
+        $stmt->bindParam("feedUrl", $feed->feedUrl);
+        $stmt->bindParam("title", $feed->title);
         $stmt->execute();
-        $wine->id = $db->lastInsertId();
+        $feed->id = $db->lastInsertId();
         $db = null;
 
         $response = \Slim\Slim::getInstance()->response();
