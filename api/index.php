@@ -111,7 +111,7 @@ function deleteLink($id){
 
 function getfeeds() {
     //$sql = "select * FROM feeds order by title";
-    $sql = "select ifnull(a.title, '') as category, b.url, b.feed_url, b.title FROM categories a right join feeds b on a.category_id = b.category_id order by a.category_id, b.title";
+    $sql = "select b.feed_id as id, ifnull(a.title, '') as category, b.url, b.feed_url, b.title FROM categories a right join feeds b on a.category_id = b.category_id order by a.category_id, b.title";
 
     try {
         $db = getConnection();
@@ -208,7 +208,7 @@ function updateFeed($feedId, $categoryId){
 }
 
 function deletefeed($id){
-    $sql = "DELETE FROM feed WHERE id=:id";
+    $sql = "DELETE FROM feeds WHERE feed_id=:id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  

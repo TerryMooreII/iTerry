@@ -21,7 +21,7 @@
                 <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
                 {{feed.title}}
               </div>
-              <div class="pull-right removeFeed" ng-click="removeFeed(feed.id)">
+              <div class="pull-right removeFeed" ng-click="confirmDelete(feed.id)">
                 <i class="icon-remove-sign"></i>
               </div>
               <div class="clearfix"></div>
@@ -48,7 +48,7 @@
             <div ng-click="showFullStory(entry)">
 
               {{entry.title}}
-              
+              <span class="published mute pull-right feed-published">{{entry.publishedDate}}</span>
             </div>
           </li>
         </ul>

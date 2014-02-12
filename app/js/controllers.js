@@ -224,7 +224,14 @@ angular.module('controllers', []).
             $scope.story = entry;
         }
 
+        $scope.confirmDelete = function(id){
+            var ask = confirm('Delete Feed?');
+            if (ask)
+                $scope.removeFeed(id);
+        }
+        
         $scope.removeFeed = function(id){
+
             readerService.delete(id, function(){
                 getAll();
             }, function(){
