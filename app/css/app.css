@@ -2,15 +2,26 @@
     font-family: 'Roboto', sans-serif;
 }
 
+#reader{
+    position: absolute;
+    top: 159px;
+    bottom: 10px;
+    /* overflow: hidden; */
+}
+
 #feeds{
     background-color:#333;
     color:#fffddd;
-    min-height: 500px;
     padding: 20px 5px;
+    overflow-y: auto;
+    position: absolute;
+    top: 0px;
+    bottom: 2px;
+    left: 0px;
 }
 
 #feeds form{
-    margin-bottom: 35px
+    margin-bottom: 35px;
 }
 
 #feeds form input{
@@ -27,16 +38,21 @@
     display: none;
 }
 
-#feeds li:hover .removeFeed{
+#feeds ul li ul li:hover .removeFeed{
     display: block;
 }
 
 #feeds img{
-    margin: 2px
+    margin: 2px;
 }
 
 #feed-entries{
-    border-right: 1px solid #333;
+    position: absolute;
+    left: 220px;
+    top: 0px;
+    bottom: 2px;
+    width:500px;
+    overflow: hidden;
     padding-right: 10px;
 }
 
@@ -47,9 +63,10 @@
 }
 
 #feed-entries h2{
-    font-size:16px;
+    font-size:14px;
     padding:0px;
-    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 15px
 }
 
 #feed-entries div{
@@ -58,19 +75,41 @@
 
 #feed-entries ul{
     overflow-y: auto;
-    height: 200px
+    position: absolute;
+    top: 70px;
+    bottom: 2px;
+    width:500px;
 }
 
+#feed-entries li{
+    margin: 0px 0px;
+    padding: 20px 10px;
+    font-size: 16px;
+    border-top:1px solid #aaa;
+}
+
+#feed-entries li:hover{
+    background-color: #eee;
+    font-weight: bold
+}
+
+/*
 #feed-entries div:hover{
     text-decoration: underline;
-}
+}*/
 
 .published{
     font-style: italic;
 }
 
 #feed-story{
-
+    overflow-y: auto;
+    position: absolute;
+    top: 0px;
+    bottom: 15px;
+    right: 0px;
+    left: 800px;
+    padding-right:20px;
 }
 
 #feed-story div{
@@ -89,61 +128,24 @@
     margin-top: 0px;
 }
 
-
-
-/*.row-fluid{
-    margin-bottom:10px;
-}
-
-
-.feed-container{
-    border:1px solid #e3e3e3;
-    font-size:12px;
-}
-
-.feed-header{
-    border-bottom:1px solid #e3e3e3;
-    padding:2px 0px 2px 5px;
-    background-color:#f5f5f5;
-    height:18px;
-}
-
-.feed-header>a{
-    color:#333;
-}
-
-.feed-header-actions{
-    margin-right:5px;
-    display:none;
-}
-
-.feed-header-actions> i {
-    margin-right:2px;
-    margin-left:2px;
-}
-
-.feed-header:hover > .feed-header-actions{
-    display: block;
-}
-
-.feed-body{
-    padding:12px;
-}
-
-.feed-body>ul{
+.folder{
 
 }
 
-.feed-body a{
-    
-}*/
+.feeds{
+    padding-left:17px;
+}
 
 footer{
     border:1px solid #e3e3e3;
     font-size:11px;
     background-color:#f5f5f5;
-}
 
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+
+}
 
 .pointer{
     cursor:pointer;

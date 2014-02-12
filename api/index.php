@@ -110,7 +110,9 @@ function deleteLink($id){
 */
 
 function getfeeds() {
-    $sql = "select * FROM feeds order by title";
+    //$sql = "select * FROM feeds order by title";
+    $sql = "select ifnull(a.title, '') as category, b.url, b.feed_url, b.title FROM categories a right join feeds b on a.category_id = b.category_id order by a.category_id, b.title";
+
     try {
         $db = getConnection();
         $stmt = $db->query($sql);

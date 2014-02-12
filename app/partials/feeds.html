@@ -1,33 +1,49 @@
 <!-- Feeds -->
 
 
-  <div class="row-fluid">
+  <div class="row-fluid" id="reader">
+
     <div class="span2" id="feeds">
+      
       <form class="form-inline" ng-submit="addFeed()">
         <input type="text" ng-model="feedUrl">
-        <button class="btn btn-small btn-primary"><i class="icon-plus"></i> Add</button>
-        <div>{{message}}</div>
+        <button class="btn btn-small btn-primary" ng-disabled="!feedUrl"><i class="icon-plus"></i> Add</button>
+        <div>{{message || '&nbsp'}}</div>
       </form>
-      <ul class="unstyled">
-        <li ng-repeat="feed in feeds">
-          <div class="pull-left" ng-click="showFeedSummary(feed.feed_url)">  
-            <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
-            {{feed.title}}
-          </div>
-          <div class="pull-right removeFeed" ng-click="removeFeed(feed.id)">
-            <i class="icon-remove-sign"></i>
-          </div>
-          <div class="clearfix"></div>
+      
+      
+      <ul class="unstyled folder">
+        <li ng-repeat="(key, value) in feeds">
+          {{key}}
+          <ul class="unstyled feeds">
+            <li ng-repeat="feed in value">
+              <div class="pull-left" ng-click="showFeedSummary(feed.feed_url)">  
+                <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
+                {{feed.title}}
+              </div>
+              <div class="pull-right removeFeed" ng-click="removeFeed(feed.id)">
+                <i class="icon-remove-sign"></i>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ul>
+
+
+
         </li>
+
       </ul>
+      
     </div>
 
     <div class="span4" id="feed-entries" ng-show="feedData">
         
-        <h1><a ng-href="{{feedData.link}}">{{feedData.title}}</a></h1>
-        <h2>{{feedData.description}}</h2>
-
-        <ol class="ordered">
+        <header>  
+          <h1 class="pull-left"><a ng-href="{{feedData.link}}" title="{{feedData.description}}">{{feedData.title}}</a></h1>
+          <!-- <h2 class="pull-left">{{feedData.description}}</h2> -->
+        </header>
+        <div class="clearfix"></div>
+        <ul class="unstyled">
           <li ng-repeat="entry in feedData.entries">
             <div ng-click="showFullStory(entry)">
 
@@ -35,10 +51,10 @@
               
             </div>
           </li>
-        </ol>
+        </ul>
 
     </div>
-    <div class="span6" id="feed-story">
+    <div  id="feed-story">
         <h1><a target="_blank" ng-href="{{story.link}}">{{story.title}}</a></h1>
         <span class="published muted">{{story.publishedDate}}</span>
         <div ng-bind-html-unsafe="story.content"></div>

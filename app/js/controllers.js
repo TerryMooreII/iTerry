@@ -200,8 +200,10 @@ angular.module('controllers', []).
             console.log('ReaderController.getAll...');
             
             readerService.getAll(function(response){
-                $scope.feeds = response.feeds;
                 
+                $scope.feeds = _.groupBy(response.feeds, 'category');
+                console.log($scope.feeds)
+
             }, function(){
                 console.log('ReaderController.getFeeds failure....')
             });
@@ -226,7 +228,7 @@ angular.module('controllers', []).
             readerService.delete(id, function(){
                 getAll();
             }, function(){
-                
+
             });
         };
 
