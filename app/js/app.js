@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('home', ['myApp.filters', 'services', 'myApp.directives', 'controllers', '$strap.directives']).
+angular.module('home', ['myApp.filters', 'services', 'myApp.directives', 'controllers', '$strap.directives', 'ngDragDrop']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/index.html', {templateUrl: 'partials/feeds.html', controller: 'ReaderController'});
     $routeProvider.when('/modify-feeds.html', {templateUrl: 'partials/modify-feeds.html', controller: 'FeedsController'});

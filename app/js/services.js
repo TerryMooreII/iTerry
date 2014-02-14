@@ -94,6 +94,11 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure);
         };
 
+        readerService.update = function(request, onSuccess, onFailure){
+            $http.put(WEB_SERVICE_URL + '/feeds/'+ request.feedId + '/category/' + request.categoryId)
+                .success(onSuccess).error(onFailure);
+        };
+
         readerService.getFeedFromGoogle = function(feedUrl, onSuccess, onFailure){
             $http.jsonp(GOOGLE_FEED_API_URL + feedUrl)
                 .success(onSuccess).error(onFailure);

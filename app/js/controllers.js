@@ -195,6 +195,8 @@ angular.module('controllers', []).
         $scope.message = '';
         $scope.feeds = [];
         $scope.feedData = null;
+        var categories = [];
+
 
         var getAll = function(){
             console.log('ReaderController.getAll...');
@@ -229,7 +231,7 @@ angular.module('controllers', []).
             if (ask)
                 $scope.removeFeed(id);
         }
-        
+
         $scope.removeFeed = function(id){
 
             readerService.delete(id, function(){
@@ -270,8 +272,34 @@ angular.module('controllers', []).
                 $scope.message = 'Unable to get feed.'
             });
         };
+      
+        $scope.dropSuccessHandler = function($event,index,array){
+            console.log('success handler')
+            //array.splice(index,1);
+        };
+        
+        $scope.onDrop = function($event,$data,key){
+            //array.push($data);
+            console.log('onDrop ' + $data.id + ' data ' + key)
+            
+            var categoryId = categories[key].category_id; 
+            
+            readerService.update({feedId:$data.id, categoryId:categoryId}, 
+                function(){
+                    getAll();
+                })
+  
+        };
+
+        var getCategories = function(){
+            categoryService.get(function(data){
+                categories = _.indexBy(data.categories, 'title');
+                console.log(categories)
+            })
+        }
 
         getAll();
+        getCategories();
 
     }])
     .controller('WeatherController', ['$scope', 'weatherService', 'localStorageService', function($scope, weatherService, localStorageService) {

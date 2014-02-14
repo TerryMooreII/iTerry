@@ -12,12 +12,23 @@
 #feeds{
     background-color:#333;
     color:#fffddd;
-    padding: 20px 5px;
+    padding: 0px 5px;
     overflow-y: auto;
     position: absolute;
     top: 0px;
     bottom: 2px;
     left: 0px;
+}
+
+#feeds fieldset{
+    border: 0px;
+}
+
+#feeds legend{
+    font-size:14px;
+    color:#eee;
+    border:0px;
+    margin: 0px;
 }
 
 #feeds form{
@@ -57,7 +68,7 @@
 }
 
 #feed-entries h1{
-    font-size:18px;
+    font-size:24px;
     padding: 0px;
     margin-bottom: 0px;
 }
@@ -83,14 +94,16 @@
 
 #feed-entries li{
     margin: 0px 0px;
-    padding: 20px 10px;
+    padding: 10px 10px;
     font-size: 16px;
     border-top:1px solid #aaa;
+    border-left: 3px solid white;
 }
 
 #feed-entries li:hover{
     background-color: #eee;
-    font-weight: bold
+    font-weight: bold;
+    border-left:3px blue solid;
 }
 
 /*
@@ -100,6 +113,7 @@
 
 .published{
     font-style: italic;
+    margin-bottom: 6px
 }
 
 .feed-published{
@@ -133,7 +147,9 @@
 }
 
 .folder{
-
+    margin:15px 0px 3px 2px;
+    font-weight: bold;
+    /*border-bottom: 1px solid #eee*/
 }
 
 .feeds{
@@ -144,13 +160,9 @@ footer{
     border:1px solid #e3e3e3;
     font-size:11px;
     background-color:#f5f5f5;
-
     position: absolute;
     bottom: 0px;
-    width: 100%;
+    right: 0px;
+    left: 0px;
 
-}
-
-.pointer{
-    cursor:pointer;
 }
