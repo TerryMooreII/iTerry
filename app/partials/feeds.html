@@ -7,17 +7,25 @@
       
       <form class="form-inline" ng-submit="addFeed()">
         <fieldset>
-          <legend>Feed Url</legend>
-        <input type="text" ng-model="feedUrl">
+          <legend>Add Feed</legend>
+        <input type="text" ng-model="feedUrl" placeholder="Feed URL">
         <button class="btn btn-small btn-primary" ng-disabled="!feedUrl"><i class="icon-plus"></i> Add</button>
         <div>{{message || '&nbsp'}}</div>
         </fieldset>
       </form>
       
+      <form class="form-inline" ng-submit="addCategory()">
+        <fieldset>
+          <legend>Add Category</legend>
+        <input type="text" ng-model="category" placeholder="Category Name">
+        <button class="btn btn-small btn-primary" ng-disabled="!category"><i class="icon-plus"></i> Add</button>
+        <div>{{message || '&nbsp'}}</div>
+        </fieldset>
+      </form>
       
       <ul class="unstyled">
         <li ng-repeat="(key, value) in feeds">
-          <div class="folder"  ui-on-Drop="onDrop($event,$data,key)"> {{key}} </div>
+          <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> {{key}} </div>
           <ul class="unstyled feeds">
             <li ng-repeat="feed in value" ui-draggable="true" drag="feed"  ui-on-drop-success="dropSuccessHandler($event,$index, key)"> <!--  -->
               <div class="pull-left" ng-click="showFeedSummary(feed.feed_url)"  >  

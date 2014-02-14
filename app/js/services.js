@@ -130,6 +130,11 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure);
         };
 
+        categoryService.update = function(request, onSuccess, onFailure){
+            $http.post(WEB_SERVICE_URL + '/categories/' + request.id + '/' + request.title)
+                .success(onSuccess).error(onFailure);
+        };
+
         return categoryService;
     }]).
     service('weatherService', ['$http',  function($http){

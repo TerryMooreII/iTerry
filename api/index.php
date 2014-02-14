@@ -26,6 +26,7 @@ $app->delete('/feeds/:id', 'deletefeed');
 $app->get('/categories', 'getAllCategory');
 //$app->get('/categories/:title', 'getCategoryById');
 $app->post('/categories/:title', 'addCategory');
+$app->post('/categories/:id/:title', 'updateCategory'); //Change categoryid to new name.
 
 
 $app->run();
@@ -159,7 +160,6 @@ function addfeed(){
     $request = \Slim\Slim::getInstance()->request();
     $feed = json_decode($request->getBody());   
         
-
     $sql = "INSERT INTO feeds (feed_url, url, title) VALUES (:feedUrl, :url, :title)";
     try {
         $db = getConnection();
@@ -278,6 +278,31 @@ function addCategory($title){
         echo '{"error":{"text":'. $e->getMessage() .'}}'; 
     }
 }
+
+function updateCategory($id, $title){
+    
+    $sql = "UPDATE categories set title = :title where category_id = :id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("title", $title);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        //$category->id = $db->lastInsertId();
+        $db = null;
+
+        $response = \Slim\Slim::getInstance()->response();
+        $response['Content-Type'] = 'application/json';
+        $response->status(200);
+        $response->body("");
+
+        //echo '{"categories": ' . json_encode($category) . '}';
+        
+    } catch(Exception $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+}
+
 
 function getConnection() {
     

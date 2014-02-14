@@ -278,24 +278,23 @@ angular.module('controllers', []).
             //array.splice(index,1);
         };
         
-        $scope.onDrop = function($event,$data,key){
-            //array.push($data);
-            console.log('onDrop ' + $data.id + ' data ' + key)
-            
-            var categoryId = categories[key].category_id; 
-            
+        $scope.onDrop = function($event,$data,categoryTitle){
+
+            var categoryId =  $scope.getCategoryId(categoryTitle);
             readerService.update({feedId:$data.id, categoryId:categoryId}, 
                 function(){
                     getAll();
-                })
-  
+                })  
         };
 
         var getCategories = function(){
             categoryService.get(function(data){
                 categories = _.indexBy(data.categories, 'title');
-                console.log(categories)
             })
+        }
+
+        $scope.getCategoryId = function(title){
+            return categories[title].category_id;
         }
 
         getAll();
