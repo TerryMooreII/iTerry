@@ -266,7 +266,7 @@ angular.module('controllers', []).
         $scope.addFeed = function(){
             readerService.getFeedFromGoogle($scope.feedUrl, function(json){
                 if (json === null || json.responseStatus !== 200 ){
-                    $scope.message = 'Invalid Feed Url';
+                    $timeout(function(){$scope.message = 'Invalid Feed Url';}, 1000);
                     return;
                 }
                 var feed = json.responseData.feed;
@@ -278,11 +278,10 @@ angular.module('controllers', []).
 
                 readerService.add(request, function(data){
                     $scope.feedUrl = '';
-                    
                     getAll();   
                 }, 
                 function(data){
-                    $scope.message = 'Error adding Feed.'
+                    $timeout(function(){$scope.message = 'Error adding Feed.'}, 1000);
                     console.log('Error %o', data);
                 });
             }, 
