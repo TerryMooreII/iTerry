@@ -297,6 +297,24 @@ angular.module('controllers', []).
             return categories[title].category_id;
         }
 
+        $scope.addCategory = function(){
+            console.log('ModifyFeedsdController.addCategory...');
+            console.log("New Category Name: " + $scope.category)
+
+            if (!$scope.category)
+                return;
+
+            categoryService.add($scope.category,
+                function(response){
+                    $scope.category = null;
+                    getAll();
+                }, function(response){
+                    console.log('ReaderController.addCategory failure....')
+                    console.log(response);
+                });
+
+        };
+
         getAll();
         getCategories();
 

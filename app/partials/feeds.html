@@ -4,31 +4,24 @@
   <div class="row-fluid" id="reader">
 
     <div class="span2" id="feeds">
-      
-      <form class="form-inline" ng-submit="addFeed()">
-        <fieldset>
-          <legend>Add Feed</legend>
-        <input type="text" ng-model="feedUrl" placeholder="Feed URL">
+      <form class="form-inline" ng-submit="addFeed()" style="margin-top:10px">
+        <input type="text" ng-model="feedUrl" placeholder="Add Feed URL">
         <button class="btn btn-small btn-primary" ng-disabled="!feedUrl"><i class="icon-plus"></i> Add</button>
         <div>{{message || '&nbsp'}}</div>
-        </fieldset>
-      </form>
+       </form>
       
       <form class="form-inline" ng-submit="addCategory()">
-        <fieldset>
-          <legend>Add Category</legend>
-        <input type="text" ng-model="category" placeholder="Category Name">
+        <input type="text" ng-model="category" placeholder="New Category">
         <button class="btn btn-small btn-primary" ng-disabled="!category"><i class="icon-plus"></i> Add</button>
         <div>{{message || '&nbsp'}}</div>
-        </fieldset>
-      </form>
+       </form>  
       
       <ul class="unstyled">
         <li ng-repeat="(key, value) in feeds">
           <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> {{key}} </div>
           <ul class="unstyled feeds">
             <li ng-repeat="feed in value" ui-draggable="true" drag="feed"  ui-on-drop-success="dropSuccessHandler($event,$index, key)"> <!--  -->
-              <div class="pull-left" ng-click="showFeedSummary(feed.feed_url)"  >  
+              <div class="pull-left" ng-show="feed.feed_url" ng-click="showFeedSummary(feed.feed_url)"  >  
                 <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
                 {{feed.title}}
               </div>
@@ -40,7 +33,6 @@
           </ul>
         </li>
       </ul>
-      
     </div>
 
     <div class="span4" id="feed-entries" ng-show="feedData">
