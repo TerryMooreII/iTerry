@@ -27,7 +27,7 @@ $app->get('/categories', 'getAllCategory');
 //$app->get('/categories/:title', 'getCategoryById');
 $app->post('/categories/:title', 'addCategory');
 $app->post('/categories/:id/:title', 'updateCategory'); //Change categoryid to new name.
-
+$app->delete('/categories/:id', 'deleteCategoryCall'); 
 
 $app->run();
 
@@ -207,6 +207,31 @@ function updateFeed($feedId, $categoryId){
 
 }
 
+function setFeedCategoryNull($categoryId){
+   
+    $sql = "UPDATE feeds SET category_id = null WHERE category_id = :categoryId";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("categoryId", $categoryId);
+        $stmt->execute();
+        //$feed->id = $db->lastInsertId();
+        $db = null;
+
+        $response = \Slim\Slim::getInstance()->response();
+        $response['Content-Type'] = 'application/json';
+        $response->status(200);
+        $response->body("{}");
+
+
+    } catch(Exception $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }    
+
+}
+
+
+
 function deletefeed($id){
     $sql = "DELETE FROM feeds WHERE feed_id=:id";
     try {
@@ -301,6 +326,29 @@ function updateCategory($id, $title){
     } catch(Exception $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}'; 
     }
+}
+
+function deleteCategoryCall($id){
+    setFeedCategoryNull($id);
+    deleteCategory($id);
+
+}
+
+function deleteCategory($id){
+
+    $sql = "DELETE FROM categories WHERE category_id=:id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        $db = null;
+
+
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+    
 }
 
 

@@ -18,6 +18,7 @@
     top: 0px;
     bottom: 2px;
     left: 0px;
+    width:250px;
 }
 
 #feeds fieldset{
@@ -52,6 +53,15 @@
 #feeds ul li ul li:hover .removeFeed{
     display: block;
 }
+
+.removeCategory{
+    display: none;
+}
+
+.folder:hover .removeCategory{
+    display: block;
+}
+
 
 #feeds img{
     margin: 2px;

@@ -187,7 +187,8 @@ angular.module('controllers', []).
         }
 
     }]).
-    controller('ReaderController', ['$scope', 'readerService', '$filter', 'localStorageService', 'categoryService', function($scope, readerService, $filter, localStorageService, categoryService) {
+    controller('ReaderController', ['$scope', 'readerService', '$filter', 'localStorageService', 'categoryService', '$timeout', 'MyUtil',
+     function($scope, readerService, $filter, localStorageService, categoryService, $timeout, MyUtil) {
 
         console.log("Controllers.ReaderController Starting...");
 
@@ -197,6 +198,8 @@ angular.module('controllers', []).
         $scope.feedData = null;
         var categories = [];
 
+
+        $scope.MyUtil = MyUtil;
 
         var getAll = function(){
             console.log('ReaderController.getAll...');
@@ -226,11 +229,30 @@ angular.module('controllers', []).
             $scope.story = entry;
         }
 
-        $scope.confirmDelete = function(id){
-            var ask = confirm('Delete Feed?');
-            if (ask)
-                $scope.removeFeed(id);
+        $scope.confirmDelete = function(id, type){
+            if (type === undefined)
+                return
+
+            var type = type.toLowerCase();
+
+            var ask = confirm('Delete '+ type +'?');
+            if (ask){
+                if (type === 'category')
+                    $scope.removeCategory(id);
+                else
+                    $scope.removeFeed(id);
+            }   
         }
+
+
+        $scope.removeCategory = function(id){
+
+            categoryService.delete(id, function(){
+                getAll();
+            }, function(){
+
+            });
+        };
 
         $scope.removeFeed = function(id){
 
@@ -255,12 +277,8 @@ angular.module('controllers', []).
                 };
 
                 readerService.add(request, function(data){
-                    $scope.message = 'Feed Added.'
                     $scope.feedUrl = '';
-                    setTimeout(function(){
-                        $scope.message = '';
-                    }, 1000);
-
+                    
                     getAll();   
                 }, 
                 function(data){
@@ -308,6 +326,7 @@ angular.module('controllers', []).
                 function(response){
                     $scope.category = null;
                     getAll();
+                    getCategories();
                 }, function(response){
                     console.log('ReaderController.addCategory failure....')
                     console.log(response);

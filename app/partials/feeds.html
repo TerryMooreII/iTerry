@@ -18,14 +18,21 @@
       
       <ul class="unstyled">
         <li ng-repeat="(key, value) in feeds">
-          <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> {{key}} </div>
+          <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
+            {{key}} 
+            <div class="pull-right removeCategory" ng-hide="!key" ng-click="confirmDelete(getCategoryId(key), 'category')">
+                <i class="icon-remove-sign"></i>
+              </div>
+              <div class="clearfix"></div>
+          </div>
           <ul class="unstyled feeds">
             <li ng-repeat="feed in value" ui-draggable="true" drag="feed"  ui-on-drop-success="dropSuccessHandler($event,$index, key)"> <!--  -->
               <div class="pull-left" ng-show="feed.feed_url" ng-click="showFeedSummary(feed.feed_url)"  >  
-                <img ng-src="{{feed.url}}/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px">
+                <!-- <img ng-src="feed.url/favicon.ico" err-src="../app/img/rss_icon.gif" style="height:16px; width:16px"> -->
+                <img ng-src="{{MyUtil.getFavicon(feed.url, '../app/img/rss_icon.gif')}}" style="height:16px; width:16px">
                 {{feed.title}}
               </div>
-              <div class="pull-right removeFeed" ng-click="confirmDelete(feed.id)">
+              <div class="pull-right removeFeed" ng-click="confirmDelete(feed.id, 'feed')">
                 <i class="icon-remove-sign"></i>
               </div>
               <div class="clearfix"></div>
@@ -45,7 +52,7 @@
         <ul class="unstyled">
           <li ng-repeat="entry in feedData.entries">
             <div ng-click="showFullStory(entry)">
-              <span class="published mute pull-right feed-published">{{entry.publishedDate}}</span>
+              <span class="published mute pull-right feed-published">{{MyUtil.formatDate(entry.publishedDate)}}</span>
               <div class="clearfix"></div>
               {{entry.title}}
              </div>
@@ -55,7 +62,7 @@
     </div>
     <div  id="feed-story">
         <h1><a target="_blank" ng-href="{{story.link}}">{{story.title}}</a></h1>
-        <span class="published muted">{{story.publishedDate}}</span>
+        <span class="published muted">{{MyUtils.formatDate(story.publishedDate)}}</span>
         <div ng-bind-html-unsafe="story.content"></div>
     </div>
   </div>

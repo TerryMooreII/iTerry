@@ -135,6 +135,11 @@ angular.module('services', []).
                 .success(onSuccess).error(onFailure);
         };
 
+        categoryService.delete = function(id, onSuccess, onFailure){
+            $http.delete(WEB_SERVICE_URL + '/categories/' + id)
+                .success(onSuccess).error(onFailure);
+        };
+
         return categoryService;
     }]).
     service('weatherService', ['$http',  function($http){
