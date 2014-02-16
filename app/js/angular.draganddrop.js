@@ -1,10 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Ganaraj.Pr
- * Date: 11/10/13
- * Time: 11:27
- * To change this template use File | Settings | File Templates.
- */
+
 angular.module("ngDragDrop",[])
     .directive("uiDraggable", [
         '$parse',

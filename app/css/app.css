@@ -50,12 +50,20 @@
     display: none;
 }
 
+.removeFeed:hover{
+    color:red;
+}
+
 #feeds ul li ul li:hover .removeFeed{
     display: block;
 }
 
 .removeCategory{
     display: none;
+}
+
+.removeCategory:hover{
+    color:red;
 }
 
 .folder:hover .removeCategory{
@@ -175,4 +183,7 @@ footer{
     right: 0px;
     left: 0px;
 
+}
+.on-drag-enter{
+    background-color: #444; 
 }
