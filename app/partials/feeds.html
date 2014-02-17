@@ -20,8 +20,8 @@
       
       <ul class="unstyled">
         <li ng-repeat="(key, value) in feeds" tlmii-scroll-top="#feed-entries>ul">
-          <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
-            {{key}} 
+          <div class="folder" tlmii-collapsed="false"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
+            <i class="icon-chevron-down"></i> {{key}} 
             <div class="pull-right removeCategory" ng-hide="!key" ng-click="confirmDelete(getCategoryId(key), 'category')">
                 <i class="icon-remove-sign"></i>
               </div>

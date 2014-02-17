@@ -10,9 +10,10 @@
 }
 
 #feeds{
+    
     background-color:#333;
-    color:#fffddd;
-    padding: 0px 5px;
+    color:#eee;
+    padding: 10px 0px 0px 5px;
     overflow-y: auto;
     position: absolute;
     top: 0px;
@@ -189,6 +190,7 @@ footer{
 }
 
 .errorMessage{
+    color:red;
     height:16px;
 }
 

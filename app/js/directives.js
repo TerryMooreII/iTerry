@@ -40,6 +40,32 @@ angular.module('myApp.directives', [])
 			    }
 			});
 		}
+	}	
+})	
+
+.directive('tlmiiCollapsed', function(){
+	return {
+		restrict: 'AEC',
+		link: function(scope, element, attrs){
+			$(element).on('click', function(){
+				var $this = $(this);
+				var $icon = $this.children('i').first();
+
+				if (attrs.tlmiiCollapsed == "false"){
+					$this.next('ul').hide();
+					$icon.addClass('icon-chevron-right');
+					$icon.removeClass('icon-chevron-down');
+					attrs.tlmiiCollapsed = "true";
+				}	
+				else{
+					$this.next('ul').show();
+					$icon.removeClass('icon-chevron-right');
+					$icon.addClass('icon-chevron-down');
+					attrs.tlmiiCollapsed = "false";
+				}
+			});
+		}
 	}
 })	
+
 
