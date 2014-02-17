@@ -359,12 +359,10 @@ function getConnection() {
     $dbpass="tlmii2";
     $dbname="home";
 
-    // if (isProduction){
-    //     $dbhost="127.0.0.1";
-    //     $dbuser="motesh_iTerry";
-    //     $dbpass="8[eF=!oFK!8R";
-    //     $dbname="iTerry";
-    // }
+    // $dbhost="127.0.0.1";
+    // $dbuser="motersh_iTerry";
+    // $dbpass="N{f{?kW0sE1$";
+    // $dbname="motersh_iTerry";
 
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);  
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
