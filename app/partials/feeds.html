@@ -4,13 +4,16 @@
   <div class="row-fluid" id="reader">
 
     <div class="span2" id="feeds">
-      <form class="form-inline" ng-submit="addFeed()" style="margin-top:10px">
+
+      <div tlmii-add class="pointer add"><i class="icon-plus"> Add Feed</i></div>
+      <form class="form-inline hide" ng-submit="addFeed()" style="margin-top:10px">
         <input type="text" ng-model="feedUrl" placeholder="Add Feed URL">
         <button class="btn btn-small btn-primary" ng-disabled="!feedUrl"><i class="icon-plus"></i> Add</button>
-        <div>{{message || '&nbsp'}}</div>
+        <div class="errorMessage">{{message}}</div>
        </form>
       
-      <form class="form-inline" ng-submit="addCategory()">
+      <div tlmii-add class="pointer add"><i class="icon-plus"> Add Category</i></div>
+      <form class="form-inline hide" ng-submit="addCategory()">
         <input type="text" ng-model="category" placeholder="New Category">
         <button class="btn btn-small btn-primary" ng-disabled="!category"><i class="icon-plus"></i> Add</button>
        </form>  
