@@ -16,7 +16,7 @@
        </form>  
       
       <ul class="unstyled">
-        <li ng-repeat="(key, value) in feeds">
+        <li ng-repeat="(key, value) in feeds" tlmii-scroll-top="#feed-entries>ul">
           <div class="folder"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
             {{key}} 
             <div class="pull-right removeCategory" ng-hide="!key" ng-click="confirmDelete(getCategoryId(key), 'category')">

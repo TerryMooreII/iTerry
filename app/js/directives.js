@@ -5,11 +5,14 @@
 
 angular.module('myApp.directives', [])
 
-.directive('hide', function(){
+.directive('tlmiiScrollTop', function(){
 	return {
 		restrict: 'AEC',
 		link: function(scope, element, attrs){
-			$(element).hide();
+			$(element).on('click', function(){
+				if (attrs.tlmiiScrollTop)
+				$(attrs.tlmiiScrollTop).scrollTop(0);
+			});
 		}
 	}
-})
+})	
