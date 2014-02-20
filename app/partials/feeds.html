@@ -62,7 +62,10 @@
 
     </div>
     <div  id="feed-story">
-        <h1><a target="_blank" ng-href="{{story.link}}">{{story.title}}</a></h1>
+        <h1>
+          <a ng-show="story" target="_blank" ng-href="{{story.link}}">{{story.title}}</a> 
+          <a id="tweet" ng-show="story" twitter></a>
+         </h1>
         <span class="published muted">{{MyUtils.formatDate(story.publishedDate)}}</span>
         <div ng-bind-html-unsafe="story.content"></div>
     </div>

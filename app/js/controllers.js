@@ -227,6 +227,23 @@ angular.module('controllers', []).
 
         $scope.showFullStory = function(entry){
             $scope.story = entry;
+
+            addTweetBtn();
+        }
+
+        //this needs to turn to a directive
+        var addTweetBtn = function(){
+            $('#tweet').empty().addClass('tweet-btn');
+
+            new twttr.widgets.createShareButton(
+                $scope.story.link,
+                $('#tweet')[0],
+                function(el) {}, {
+                    count: 'none',
+                    text: $scope.story.title
+                }
+            );
+            
         }
 
         $scope.confirmDelete = function(id, type){
