@@ -20,14 +20,14 @@
       
       <ul class="unstyled">
         <li ng-repeat="(key, value) in feeds" tlmii-scroll-top="#feed-entries>ul">
-          <div class="folder" tlmii-collapsed="false"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
-            <i class="icon-chevron-down"></i> {{key}} 
+          <div class="folder" tlmii-collapsed="true"  ui-on-Drop="onDrop($event,$data,key)" data-category-id="getCategoryId(key)"> 
+            <i class="icon-chevron-right"></i> {{key}} 
             <div class="pull-right removeCategory" ng-hide="!key" ng-click="confirmDelete(getCategoryId(key), 'category')">
                 <i class="icon-remove-sign"></i>
               </div>
               <div class="clearfix"></div>
           </div>
-          <ul class="unstyled feeds">
+          <ul class="unstyled feeds hide">
             <li ng-repeat="feed in value" ui-draggable="true" drag="feed"  ui-on-drop-success="dropSuccessHandler($event,$index, key)"> <!--  -->
               <div class="pull-left" ng-show="feed.feed_url" ng-click="showFeedSummary(feed.feed_url)"  >  
                 <img ng-src="{{MyUtil.getFavicon(feed.url, '../app/img/rss_icon.gif')}}" style="height:16px; width:16px">

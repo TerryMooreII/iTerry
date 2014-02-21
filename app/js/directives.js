@@ -52,18 +52,24 @@ angular.module('myApp.directives', [])
 				var $this = $(this);
 				var $icon = $this.children('i').first();
 
-				if (attrs.tlmiiCollapsed == "false"){
+				$(".folder").each(function(){
+					var $this = $(this);
+					var $icon = $this.children('i').first();
 					$this.next('ul').hide();
 					$icon.addClass('icon-chevron-right');
 					$icon.removeClass('icon-chevron-down');
 					attrs.tlmiiCollapsed = "true";
-				}	
-				else{
+				})
+
+				// if (attrs.tlmiiCollapsed == "false"){
+					
+				// }	
+				// else{
 					$this.next('ul').show();
 					$icon.removeClass('icon-chevron-right');
 					$icon.addClass('icon-chevron-down');
 					attrs.tlmiiCollapsed = "false";
-				}
+				//}
 			});
 		}
 	}
