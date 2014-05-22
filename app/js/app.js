@@ -13,7 +13,8 @@ angular.module('home', ['myApp.filters', 'services', 'myApp.directives', 'contro
         getFavicon: function(str1, err) {
 	       if (str1 !== null && str1 !== '' && str1 !== undefined){
         		var url = str1.split('/');
-				return url[0] + '//' + url[2] + '/favicon.ico';
+				//return url[0] + '//' + url[2] + '/favicon.ico';
+                return 'http://g.etfv.co/' + str1;
         	}    
         	return err;
         }, 

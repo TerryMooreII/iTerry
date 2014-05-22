@@ -61,15 +61,10 @@ angular.module('myApp.directives', [])
 					attrs.tlmiiCollapsed = "true";
 				})
 
-				// if (attrs.tlmiiCollapsed == "false"){
-					
-				// }	
-				// else{
-					$this.next('ul').show();
-					$icon.removeClass('icon-chevron-right');
-					$icon.addClass('icon-chevron-down');
-					attrs.tlmiiCollapsed = "false";
-				//}
+				$this.next('ul').show();
+				$icon.removeClass('icon-chevron-right');
+				$icon.addClass('icon-chevron-down');
+				attrs.tlmiiCollapsed = "false";
 			});
 		}
 	}
